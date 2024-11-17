@@ -1,14 +1,18 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Header from "./components/Header/Header";
 
 export default function App() {
   return (
     <div>
-      <BrowserRouter>
+      <Header />
+      {/* <BrowserRouter>
         <Routes>
-          <Route></Route>
+          <Route>
+            <Header />
+          </Route>
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </div>
   );
 }
