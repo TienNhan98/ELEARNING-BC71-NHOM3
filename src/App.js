@@ -1,18 +1,53 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Header from "./components/Header/Header";
+
+import StudentLayout from "./template/layouts/student-layout";
+
+import ListCoursesByCat from "./pages/student/list-courses-by-cat/list-courses-by-cat";
+import CourseDetail from "./pages/student/courses/course-detail/course-detail";
+import AuthGuard from "./guard/auth-guard";
+import AdminGuard from "./guard/admin-guard";
+import AdminLayout from "./template/layouts/admin-layout";
+import AdminListCourses from "./pages/admin/courses/list-courses";
+import StudentHome from "./pages/student/home/student-home";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 export default function App() {
   return (
     <div>
-      <Header />
-      {/* <BrowserRouter>
+      <BrowserRouter>
         <Routes>
-          <Route>
-            <Header />
+          <Route path="/login" element={<LoginPage />} />
+
+          {/* Client routes */}
+          <Route path="/" element={<StudentLayout />}>
+            <Route index element={<StudentHome />} />
+
+            {/* Hiển thị tại / */}
+            <Route
+              path="/danhmuckhoahoc/:maDanhMuc"
+              element={
+                <AuthGuard>
+                  <ListCoursesByCat />
+                </AuthGuard>
+              }
+            />
+            <Route path="/chitiet/:maKhoaHoc" element={<CourseDetail />} />
+          </Route>
+
+          {/* Admin routes */}
+          <Route
+            path="/admin"
+            element={
+              <AdminGuard>
+                <AdminLayout />
+              </AdminGuard>
+            }
+          >
+            <Route index element={<AdminListCourses />} />
           </Route>
         </Routes>
-      </BrowserRouter> */}
+      </BrowserRouter>
     </div>
   );
 }
