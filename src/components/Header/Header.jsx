@@ -58,11 +58,11 @@ export default function Header() {
       <div className="flex justify-end items-center ml-64">
         <NavBar />
       </div>
-      {/* <div className="flex justify-end items-center ml-4 chuaDangNhap">
+      <div className="flex justify-end items-center ml-4 chuaDangNhap">
         <button className="btn btn-warning font-bold text-white hover:scale-105 duration-300 transition-all">
           ĐĂNG NHẬP
         </button>
-      </div> */}
+      </div>
       <div className="daDangNhap">
         <div
           style={{
@@ -74,7 +74,7 @@ export default function Header() {
           <Dropdown
             overlay={dropdownContent}
             trigger={["hover"]}
-            placement="rightCenter" // Đặt dropdown sang bên phải của ảnh
+            placement="rightCenter"
           >
             <a className="_blank" href="#" onClick={(e) => e.preventDefault()}>
               <img
