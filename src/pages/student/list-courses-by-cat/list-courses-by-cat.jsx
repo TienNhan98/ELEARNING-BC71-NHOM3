@@ -16,11 +16,11 @@ export default function ListCoursesByCat() {
       .catch((err) => {});
   }, []);
 
-  const top4KhoaHoc = listKhoaHoc.splice(0, 4);
+  // const top4KhoaHoc = listKhoaHoc.splice(0, 4);
 
   return (
     <div className="grid grid-cols-4 grid-cols-2 md:grid-cols-4 gap-4">
-      {top4KhoaHoc.map((item) => {
+      {listKhoaHoc.map((item) => {
         return (
           <div className="flex justify-center ">
             <Card
