@@ -7,6 +7,7 @@ import swal from "sweetalert";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginActionService } from "../../redux/userSlice";
+import { userService } from "../../service/userService";
 
 export default function FormLogin() {
   let dispatch = useDispatch();
@@ -14,6 +15,29 @@ export default function FormLogin() {
 
   const [isActive, setIsActive] = useState(false);
 
+  // Validation
+  const validationSchema = Yup.object({
+    taiKhoan: Yup.string()
+      .min(2, "Tài khoản quá ít kí tự")
+      .max(16, "Tài khoản quá 16 kí tự")
+      .required("Tài khoản không được để trống"),
+    hoTen: Yup.string().required("Họ tên không được để trống"),
+    matKhau: Yup.string()
+      .required("Mật khẩu không được để trống")
+      .matches(
+        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/,
+        "Mật khẩu phải ít nhất 6 ký tự gồm chữ viết hoa, số, và kí tự đặc biệt"
+      ),
+    email: Yup.string()
+      .email("Email không hợp lệ")
+      .required("Email không được để trống"),
+    soDT: Yup.string()
+      .required("Số điện thoại không được để trống")
+      .matches(
+        /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/,
+        "Số điện thoại chưa đúng định đạng"
+      ),
+  });
   // Hàm handle đăng nhập
   const handleLogin = (values) => {
     console.log(values);
@@ -35,8 +59,8 @@ export default function FormLogin() {
         console.log("sdg", err);
 
         swal({
-          title: "Đăng nhập thất bại.",
-          text: "Vui lòng thử lại.",
+          title: "Tài khoản hoặc mật khẩu không đúng",
+          text: "Vui lòng thử lại",
           icon: "warning",
           timer: 2000,
           button: false,
@@ -54,19 +78,131 @@ export default function FormLogin() {
     onSubmit: handleLogin,
   });
 
+  // hàm hanlde đăng ký
+  const hanldeRegister = async (values) => {
+    console.log("Form Submitted", values);
+    try {
+      const result = await userService.register(values);
+      console.log("🚀 ~ hanldeRegister ~ result:", result);
+
+      if (result.status === 200) {
+        console.log("Đăng ký thành công:", result.data);
+        swal({
+          title: "Đăng ký thành công!",
+          icon: "success",
+          timer: 2000,
+          button: false,
+        });
+
+        formikRegister.resetForm();
+      }
+    } catch (error) {
+      swal({
+        title: "Đăng ký thất bại!",
+        text: error.message || "Vui lòng thử lại sau.",
+        icon: "error",
+        timer: 2000,
+        button: false,
+      });
+    }
+  };
+
+  // Formik cho form đăng ký
+  const formikRegister = useFormik({
+    initialValues: {
+      taiKhoan: "",
+      hoTen: "",
+      matKhau: "",
+      email: "",
+      soDT: "",
+      maNhom: "GP01",
+    },
+    validationSchema: validationSchema,
+    onSubmit: hanldeRegister,
+  });
+
   return (
     <div className={`${styles.container} ${isActive ? styles.active : ""}`}>
       {/* Sign Up Form */}
       <div className={`${styles.formContainer} ${styles.signUp}`}>
-        <form>
+        <form onSubmit={formikRegister.handleSubmit}>
           <h1>Đăng ký</h1>
 
-          <input type="text" placeholder="Tài khoản" />
-          <input type="text" placeholder="Họ tên" />
-          <input type="password" placeholder="Mật khẩu" />
-          <input type="email" placeholder="Email" />
-          <input type="phone" placeholder="Số điện thoại" />
-          <select name="maNhom">
+          <input
+            type="text"
+            placeholder="Tài khoản"
+            name="taiKhoan"
+            value={formikRegister.values.taiKhoan}
+            onChange={formikRegister.handleChange}
+            onBlur={formikRegister.handleBlur}
+          />
+          {formikRegister.touched.taiKhoan &&
+            formikRegister.errors.taiKhoan && (
+              <div className={styles.errorMessage}>
+                {formikRegister.errors.taiKhoan}
+              </div>
+            )}
+          <input
+            type="text"
+            placeholder="Họ tên"
+            name="hoTen"
+            value={formikRegister.values.hoTen}
+            onChange={formikRegister.handleChange}
+            onBlur={formikRegister.handleBlur}
+          />
+          {formikRegister.touched.hoTen && formikRegister.errors.hoTen && (
+            <div className={styles.errorMessage}>
+              {formikRegister.errors.hoTen}
+            </div>
+          )}
+
+          <input
+            type="password"
+            placeholder="Mật khẩu"
+            name="matKhau"
+            value={formikRegister.values.matKhau}
+            onChange={formikRegister.handleChange}
+            onBlur={formikRegister.handleBlur}
+          />
+          {formikRegister.touched.matKhau && formikRegister.errors.matKhau && (
+            <div className={styles.errorMessage}>
+              {formikRegister.errors.matKhau}
+            </div>
+          )}
+
+          <input
+            type="email"
+            placeholder="Email"
+            name="email"
+            value={formikRegister.values.email}
+            onChange={formikRegister.handleChange}
+            onBlur={formikRegister.handleBlur}
+          />
+          {formikRegister.touched.email && formikRegister.errors.email && (
+            <div className={styles.errorMessage}>
+              {formikRegister.errors.email}
+            </div>
+          )}
+
+          <input
+            type="text"
+            placeholder="Số điện thoại"
+            name="soDT"
+            value={formikRegister.values.soDT}
+            onChange={formikRegister.handleChange}
+            onBlur={formikRegister.handleBlur}
+          />
+          {formikRegister.touched.soDT && formikRegister.errors.soDT && (
+            <div className={styles.errorMessage}>
+              {formikRegister.errors.soDT}
+            </div>
+          )}
+
+          <select
+            name="maNhom"
+            value={formikRegister.values.maNhom}
+            onChange={formikRegister.handleChange}
+          >
             <option value="GP01">GP01</option>
             <option value="GP02">GP02</option>
             <option value="GP03">GP03</option>

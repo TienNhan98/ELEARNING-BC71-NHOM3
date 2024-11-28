@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import http from "../service/config";
+
+import { userService } from "../service/userService";
 
 export let loginActionService = createAsyncThunk(
   "userSlice/loginAcitonService",
   async (dataForm) => {
-    let result = await http.post("/api/QuanLyNguoiDung/DangNhap", dataForm);
+    let result = await userService.login(dataForm);
     return result.data;
   }
 );
