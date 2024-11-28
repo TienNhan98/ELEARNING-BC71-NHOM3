@@ -11,12 +11,14 @@ import AdminLayout from "./template/layouts/admin-layout";
 import AdminListCourses from "./pages/admin/courses/list-courses";
 import StudentHome from "./pages/student/home/student-home";
 import LoginPage from "./pages/LoginPage/LoginPage";
+import NotFoundLayout from "./pages/notFoundPage/not-found";
 
 export default function App() {
   return (
     <div>
       <BrowserRouter>
         <Routes>
+          {/* Login routes */}
           <Route path="/login" element={<LoginPage />} />
 
           {/* Client routes */}
@@ -46,6 +48,9 @@ export default function App() {
           >
             <Route index element={<AdminListCourses />} />
           </Route>
+
+          {/* Not Found Route */}
+          <Route path="*" element={<NotFoundLayout />} />
         </Routes>
       </BrowserRouter>
     </div>

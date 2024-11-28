@@ -1,5 +1,5 @@
 import React from "react";
 
 export default function NotFoundLayout() {
-  return <div></div>;
+  return <div>NotFoundLayout</div>;
 }
