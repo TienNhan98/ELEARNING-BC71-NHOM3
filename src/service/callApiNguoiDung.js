@@ -1,7 +1,6 @@
 import http from "./config";
 
 export let callApiNguoiDung = {
-  layDanhSachLoaiNguoiDung: () => {
-    http.get("/api/QuanLyNguoiDung/LayDanhSachLoaiNguoiDung");
-  },
+  layDanhSachLoaiNguoiDung: () =>
+    http.get("/api/QuanLyNguoiDung/LayDanhSachLoaiNguoiDung"),
 };
