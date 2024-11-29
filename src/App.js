@@ -18,6 +18,7 @@ export default function App() {
     <div>
       <BrowserRouter>
         <Routes>
+          {/* Login routes */}
           <Route path="/login" element={<LoginPage />} />
 
           {/* Client routes */}
@@ -47,8 +48,9 @@ export default function App() {
           >
             <Route index element={<AdminListCourses />} />
           </Route>
-          {/* NotFoundPage */}
-          <Route path="*" element={<NotFoundLayout />}></Route>
+
+          {/* Not Found Route */}
+          <Route path="*" element={<NotFoundLayout />} />
         </Routes>
       </BrowserRouter>
     </div>
