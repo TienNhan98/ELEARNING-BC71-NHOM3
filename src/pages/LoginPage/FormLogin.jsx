@@ -98,8 +98,8 @@ export default function FormLogin() {
       }
     } catch (error) {
       swal({
-        title: "Đăng ký thất bại!",
-        text: error.message || "Vui lòng thử lại sau.",
+        title: error.response?.data,
+        text: "Vui lòng thử lại.",
         icon: "error",
         timer: 2000,
         button: false,
