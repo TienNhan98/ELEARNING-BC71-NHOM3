@@ -1,5 +1,5 @@
-import { Card, Col, Popover, Row, Tooltip } from "antd";
-import Meta from "antd/es/card/Meta";
+import { Card, Col, Popover, Row } from "antd";
+
 import React, { useEffect, useState } from "react";
 import { callApiKhoaHoc } from "../../../service/callApiKhoaHoc";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -23,79 +23,6 @@ export default function ListCoursesByCat() {
   const topKhoaHocPhoBien = listKhoaHoc.slice(0, 4);
   const khoaHocThamKhao = listKhoaHoc.slice(10, 14);
   const cacKhoaHoc = listKhoaHoc.slice(30, 34);
-  const chiLayMot = listKhoaHoc.slice(0, 1);
-
-  //   <div>
-  //     {topKhoaHocPhoBien.map((item) => {
-  //       return (
-  //         <Card
-  //           style={{
-  //             width: 300,
-  //           }}
-  //         >
-  //           <div className="flex items-center">
-  //             <img src={avtPPV} width={"40px"} alt="" />
-  //             <span className="ml-2 font-bold" style={{ color: "#8C8C8C" }}>
-  //               Elun Musk Ricard
-  //             </span>
-  //           </div>
-  //           <div className="my-3">
-  //             <p className="font-bold">
-  //               BOOTCAMP - LẬP TRÌNH FULL STACK TỪ ZERO ĐẾN CÓ VIỆC
-  //             </p>
-  //           </div>
-  //           <div className="mb-3" style={{ color: "#8C8C8C" }}>
-  //             <p>
-  //               Đã có hơn 6200 bạn đăng kí học và có việc làm thông qua chương
-  //               trình đào tạo Bootcamp Lập trình Front End chuyên nghiệp. Khóa
-  //               học 100% thực hành cường độ cao theo dự án thực tế và kết nối
-  //               doanh nghiệp hỗ trợ tìm việc ngay sau khi học...
-  //             </p>
-  //           </div>
-  //           <div
-  //             className="flex justify-between items-center mb-3 space-x-2"
-  //             style={{
-  //               fontSize: "16px",
-  //               color: "#8c8c8c",
-  //             }}
-  //           >
-  //             <span>
-  //               <i
-  //                 className="far fa-clock mr-1"
-  //                 style={{
-  //                   color: "#f5c002",
-  //                 }}
-  //               ></i>
-  //               8 giờ
-  //             </span>
-  //             <span>
-  //               <i
-  //                 className="far fa-calendar-alt mr-1"
-  //                 style={{ color: "#f06f68" }}
-  //               ></i>
-  //               4 Tuần
-  //             </span>
-  //             <span>
-  //               <i
-  //                 className="fas fa-signal mr-1"
-  //                 style={{ color: "#65c9ff" }}
-  //               ></i>
-  //               Tất Cả
-  //             </span>
-  //           </div>
-  //           <div className="mt-3">
-  //             <NavLink
-  //               className="no-underline block w-full h-full bg-[#41b294] text-white text-center py-3"
-  //               to={`/chitiet/${item.maKhoaHoc}`}
-  //             >
-  //               Xem Chi Tiết
-  //             </NavLink>
-  //           </div>
-  //         </Card>
-  //       );
-  //     })}
-  //   </div>
-  // );
 
   return (
     <div>
