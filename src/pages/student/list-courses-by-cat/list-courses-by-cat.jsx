@@ -7,6 +7,7 @@ import avtELM from "./asset/avaElonmuck.png";
 import avtPPV from "./asset/avaPPV.png";
 
 export default function ListCoursesByCat() {
+  // cái này là cái list ở ngoài @@
   let navigate = useNavigate();
   const [listKhoaHoc, setListKhoaHoc] = useState([]);
   // console.log("🚀 ~ ListCoursesByCat ~ listKhoaHoc:", listKhoaHoc);

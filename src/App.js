@@ -30,6 +30,7 @@ export default function App() {
               path="/danhmuckhoahoc/:maDanhMuc"
               element={
                 <AuthGuard>
+                  {/* vấn đề nó lại nằm ở đây */}
                   <ListCoursesByCat />
                 </AuthGuard>
               }
