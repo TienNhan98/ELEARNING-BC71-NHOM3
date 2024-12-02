@@ -3,11 +3,12 @@ import styles from "./LoginPage.module.scss";
 import { Facebook, Github, Linkedin, Mail } from "lucide-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import swal from "sweetalert";
+
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginActionService } from "../../redux/userSlice";
 import { userService } from "../../service/userService";
+import Swal from "sweetalert2";
 
 export default function FormLogin() {
   let dispatch = useDispatch();
@@ -51,19 +52,19 @@ export default function FormLogin() {
         if (result.maLoaiNguoiDung == "GV") {
           navigate("/admin");
         } else {
-          navigate("/"); // không gây reload trang
+          navigate(-1); // không gây reload trang
         }
         console.log("🚀 ~ result:", result);
       })
       .catch((err) => {
         console.log("sdg", err);
 
-        swal({
+        Swal.fire({
           title: "Tài khoản hoặc mật khẩu không đúng",
           text: "Vui lòng thử lại",
           icon: "warning",
           timer: 2000,
-          button: false,
+          showConfirmButton: false,
         });
       });
   };
@@ -87,22 +88,22 @@ export default function FormLogin() {
 
       if (result.status === 200) {
         console.log("Đăng ký thành công:", result.data);
-        swal({
+        Swal.fire({
           title: "Đăng ký thành công!",
           icon: "success",
           timer: 2000,
-          button: false,
+          showConfirmButton: false,
         });
 
         formikRegister.resetForm();
       }
     } catch (error) {
-      swal({
+      Swal.fire({
         title: error.response?.data,
         text: "Vui lòng thử lại.",
         icon: "error",
         timer: 2000,
-        button: false,
+        showConfirmButton: false,
       });
     }
   };

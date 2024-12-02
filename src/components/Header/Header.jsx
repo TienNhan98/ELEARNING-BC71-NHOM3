@@ -12,6 +12,10 @@ export default function Header() {
   let user = useSelector((state) => state.userSlice.dataLogin);
   let navigate = useNavigate();
 
+  const handleClick = (e) => {
+    navigate("/");
+  };
+
   const handleLogout = () => {
     //1. xóa localStorage
     localStorage.removeItem("USER_LOGIN");
@@ -92,7 +96,11 @@ export default function Header() {
   const onSearch = (value, _e, info) => console.log(info?.source, value);
   return (
     <div className="m-3 flex justify-center items-center">
+<<<<<<< HEAD
       <a href="/" className="inline-block mr-2">
+=======
+      <a href="#" className="inline-block mr-2" onClick={handleClick}>
+>>>>>>> menu-future
         <div className=" transform transition-transform duration-300 hover:scale-105">
           <img src={logo} alt="Logo" style={{ width: 250 }} />
         </div>
