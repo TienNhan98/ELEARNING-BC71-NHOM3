@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
+import "./App.css";
 import StudentLayout from "./template/layouts/student-layout";
 
 import ListCoursesByCat from "./pages/student/list-courses-by-cat/list-courses-by-cat";
