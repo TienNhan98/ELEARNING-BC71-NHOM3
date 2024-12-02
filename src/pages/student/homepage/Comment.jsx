@@ -3,24 +3,29 @@ import React from "react";
 import cauPhuc from "./asset/listDangVienHangDau/cauPhuc.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
+import animate1 from "./asset/AnimateComment1.json";
+import animate2 from "./asset/AnimateComment2.json";
+import Lottie from "lottie-react";
 
 export default function Comment() {
   return (
-    <div
-      className="py-5 px-3"
-      style={{
-        background:
-          "linear-gradient(to right, rgb(65, 178, 148), rgb(246, 186, 53))",
-        backgroundSize: "200% 100%",
-        backgroundPosition: "right center",
-        transition: "background-position 0.7s ease-in-out",
-      }}
-      onMouseEnter={(e) => (e.target.style.backgroundPosition = "left center")}
-      onMouseLeave={(e) => (e.target.style.backgroundPosition = "right center")}
-    >
+    <div className="py-3 px-2">
       <Row>
-        <Col span={12}>
-          <div className="flex justify-center items-center ">
+        <Col
+          className="rounded-3xl py-5 px-3 relative overflow-hidden border-2"
+          span={12}
+        >
+          {/* Animation layer */}
+          <div className="absolute -inset-48 z-10">
+            <Lottie
+              animationData={animate1}
+              loop={true}
+              style={{ width: "100%", height: "100%" }}
+            />
+          </div>
+
+          {/* Image layer */}
+          <div className="flex justify-center items-center relative z-20">
             <img
               className="rounded-tl-[10%] rounded-tr-[50%] rounded-bl-[50%] rounded-br-[50%]"
               src={cauPhuc}
@@ -33,8 +38,19 @@ export default function Comment() {
             />
           </div>
         </Col>
-        <Col span={12}>
-          <div>
+        <Col
+          className=" border-2 rounded-3xl py-5 px-3 relative overflow-hidden"
+          span={12}
+        >
+          {/* Animation layer */}
+          <div className="absolute -inset-48 z-10">
+            <Lottie
+              animationData={animate2}
+              loop={true}
+              style={{ width: "100%", height: "100%" }}
+            />
+          </div>
+          <div className="relative z-20">
             <p style={{ fontSize: "17px" }}>
               <FontAwesomeIcon
                 icon={faQuoteLeft}
