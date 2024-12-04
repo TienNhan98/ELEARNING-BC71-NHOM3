@@ -12,7 +12,7 @@ export default function NavBar() {
     callApiKhoaHoc
       .layDanhMucKhoaHoc()
       .then((result) => {
-        console.log(result.data);
+        console.log("Danh mục", result.data);
       })
       .catch((err) => {});
   }, []);
