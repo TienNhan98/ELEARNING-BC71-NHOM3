@@ -12,4 +12,9 @@ export let callApiKhoaHoc = {
   registerCourseAPI: (infoRegisrer) => {
     return http.post("/api/QuanLyKhoaHoc/DangKyKhoaHoc", infoRegisrer);
   },
+  getCourseByCatetory: (maDanhMuc) => {
+    return http.get(
+      `/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${maDanhMuc}&MaNhom=GP01`
+    );
+  },
 };
