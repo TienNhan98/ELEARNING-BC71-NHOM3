@@ -48,6 +48,7 @@ export default function FormLogin() {
       .then((result) => {
         let dataJson = JSON.stringify(result);
         localStorage.setItem("USER_LOGIN", dataJson);
+        // localStorage.setItem("token", result?.accesstoken);
 
         if (result.maLoaiNguoiDung == "GV") {
           navigate("/admin");

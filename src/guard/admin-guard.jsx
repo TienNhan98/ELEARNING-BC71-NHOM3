@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 
 const AdminGuard = ({ children }) => {
-  const isLoggedIn = !!localStorage.getItem("token");
+  const isLoggedIn = !!localStorage.getItem("USER_LOGIN");
   const isAdmin = JSON.parse(localStorage.getItem("user"))?.role === "admin"; // Kiểm tra vai trò người dùng
 
   if (!isLoggedIn || !isAdmin) {

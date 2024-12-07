@@ -12,6 +12,7 @@ import AdminListCourses from "./pages/admin/courses/list-courses";
 import StudentHome from "./pages/student/home/student-home";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import NotFoundLayout from "./pages/notFoundPage/not-found";
+import SearchResultsPage from "./pages/student/SearchResultsPage/SearchResultsPage";
 
 export default function App() {
   return (
@@ -33,6 +34,10 @@ export default function App() {
                   <ListCoursesByCat />
                 </AuthGuard>
               }
+            />
+            <Route
+              path="/timkiem/:searchValue"
+              element={<SearchResultsPage />}
             />
             <Route path="/chitiet/:maKhoaHoc" element={<CourseDetail />} />
           </Route>

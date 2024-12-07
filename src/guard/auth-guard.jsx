@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 
 const AuthGuard = ({ children }) => {
-  const isLoggedIn = !!localStorage.getItem("token"); // Kiểm tra token đăng nhập (giả sử bạn lưu token ở localStorage)
+  const isLoggedIn = !!localStorage.getItem("USER_LOGIN"); // Kiểm tra token đăng nhập (giả sử bạn lưu token ở localStorage)
   console.log(isLoggedIn);
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />; // Chuyển hướng về trang login nếu chưa đăng nhập
