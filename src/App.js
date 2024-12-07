@@ -12,7 +12,11 @@ import AdminListCourses from "./pages/admin/courses/list-courses";
 import StudentHome from "./pages/student/home/student-home";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import NotFoundLayout from "./pages/notFoundPage/not-found";
+<<<<<<< HEAD
 import SearchResultsPage from "./pages/student/SearchResultsPage/SearchResultsPage";
+=======
+import CatetoryCourse from "./pages/student/catetory-course/catetory-course";
+>>>>>>> origin/feature-admin
 
 export default function App() {
   return (
@@ -29,11 +33,7 @@ export default function App() {
             {/* Hiển thị tại / */}
             <Route
               path="/danhmuckhoahoc/:maDanhMuc"
-              element={
-                <AuthGuard>
-                  <ListCoursesByCat />
-                </AuthGuard>
-              }
+              element={<CatetoryCourse />}
             />
             <Route
               path="/timkiem/:searchValue"

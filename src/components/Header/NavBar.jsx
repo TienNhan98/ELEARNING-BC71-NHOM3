@@ -13,7 +13,11 @@ export default function NavBar() {
     callApiKhoaHoc
       .layDanhMucKhoaHoc()
       .then((result) => {
+<<<<<<< HEAD
         // console.log(result);
+=======
+        console.log(result.data);
+>>>>>>> origin/feature-admin
         setListDanhMucKhoaHoc(result.data);
       })
       .catch((err) => {});
@@ -34,7 +38,6 @@ export default function NavBar() {
       ))}
     </Menu>
   );
-
   // Menu con cho Sự kiện
   const eventMenu = (
     <Menu className="bg-[#41b294] bg-opacity-30 space-y-3">
