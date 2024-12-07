@@ -13,11 +13,7 @@ export default function NavBar() {
     callApiKhoaHoc
       .layDanhMucKhoaHoc()
       .then((result) => {
-<<<<<<< HEAD
-        // console.log(result);
-=======
         console.log(result.data);
->>>>>>> origin/feature-admin
         setListDanhMucKhoaHoc(result.data);
       })
       .catch((err) => {});

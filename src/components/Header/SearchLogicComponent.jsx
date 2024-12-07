@@ -23,7 +23,7 @@ const SearchLogicComponent = ({ onSearch }) => {
 
           // Lọc dữ liệu theo maDanhMucKhoahoc
           const filteredCourses = allCourses.filter((course) =>
-            normalizeString(course.danhMucKhoaHoc.maDanhMucKhoahoc).includes(
+            normalizeString(course.danhMucKhoaHoc.tenDanhMucKhoaHoc).includes(
               searchValue
             )
           );

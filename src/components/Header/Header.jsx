@@ -17,18 +17,29 @@ export default function Header() {
   // Xử lý tìm kiếm và điều hướng
   const handleSearch = async (value) => {
     const normalizedValue = normalizeString(value); // Chuẩn hóa giá trị tìm kiếm
-
+    if (!normalizedValue || normalizedValue.length === 0) {
+      // console.error("Giá trị tìm kiếm trống!");
+      return; // Không thực hiện điều hướng nếu giá trị rỗng
+    }
     try {
       const response = await callApiKhoaHoc.layDanhSachKhoaHoc();
       const allCourses = response.data;
 
-      // Lọc khóa học dựa trên `maDanhMucKhoahoc`
-      const filteredCourses = allCourses.filter((course) =>
-        normalizeString(course.danhMucKhoaHoc.maDanhMucKhoahoc).includes(
-          normalizedValue
-        )
-      );
+      // Lọc khóa học dựa trên tenDanhMucKhoaHoc
+      const filteredCourses = allCourses.filter((course) => {
+        const normalizedCourseName = normalizeString(
+          course.danhMucKhoaHoc.tenDanhMucKhoaHoc
+        );
 
+        return normalizedCourseName.includes(normalizedValue);
+      });
+      // Nếu không có kết quả tìm kiếm, hiển thị 6 khóa học ngẫu nhiên
+      if (filteredCourses.length === 0) {
+        // Shuffle danh sách allCourses để lấy khóa học ngẫu nhiên
+        const shuffledCourses = allCourses.sort(() => 0.5 - Math.random());
+        // Lấy 6 khóa học ngẫu nhiên
+        filteredCourses.push(...shuffledCourses.slice(0, 6));
+      }
       // Điều hướng đến trang tìm kiếm với tham số tìm kiếm
       navigate(`/timkiem/${normalizedValue}`, {
         state: { results: filteredCourses },

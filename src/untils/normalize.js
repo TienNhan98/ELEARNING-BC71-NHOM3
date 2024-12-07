@@ -41,8 +41,9 @@ export const normalizeString = (str) => {
     .replace(
       /[àáạảãèéẹẻẽìíịỉĩòóọỏõùúụủũỳýỵỷỹđ]/g,
       (match) => map[match] || match
-    )
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, " "); // Chuyển thành chữ thường, loại bỏ khoảng trắng thừa
+    ) // Thay thế ký tự tiếng Việt
+    .toLowerCase() // Chuyển về chữ thường
+    .trim() // Loại bỏ khoảng trắng ở đầu và cuối chuỗi
+    .replace(/\s+/g, "") // Loại bỏ tất cả khoảng trắng, kể cả giữa các ký tự
+    .replace(/[^a-z0-9]/g, ""); // Loại bỏ ký tự đặc biệt
 };
