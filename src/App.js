@@ -13,6 +13,7 @@ import StudentHome from "./pages/student/home/student-home";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import NotFoundLayout from "./pages/notFoundPage/not-found";
 import CatetoryCourse from "./pages/student/catetory-course/catetory-course";
+import CourseAll from "./pages/student/courses/course-all/course-all";
 
 export default function App() {
   return (
@@ -31,7 +32,11 @@ export default function App() {
               path="/danhmuckhoahoc/:maDanhMuc"
               element={<CatetoryCourse />}
             />
+            {/* route chi tiết */}
             <Route path="/chitiet/:maKhoaHoc" element={<CourseDetail />} />
+
+            {/* route hiển thị tất cả khóa học */}
+            <Route path="/khoahoc" element={<CourseAll />} />
           </Route>
 
           {/* Admin routes */}

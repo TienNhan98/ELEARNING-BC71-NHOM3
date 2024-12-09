@@ -9,12 +9,17 @@ export let callApiKhoaHoc = {
       `/api/QuanLyKhoaHoc/LayThongTinKhoaHoc?maKhoaHoc=${maKhoaHoc}`
     );
   },
-  registerCourseAPI: (infoRegisrer) => {
-    return http.post("/api/QuanLyKhoaHoc/DangKyKhoaHoc", infoRegisrer);
+  registerCourseAPI: async (infoRegisrer) => {
+    return await http.post("/api/QuanLyKhoaHoc/DangKyKhoaHoc", infoRegisrer);
   },
-  getCourseByCatetory: (maDanhMuc) => {
-    return http.get(
+  getCourseByCatetory: async (maDanhMuc) => {
+    return await http.get(
       `/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${maDanhMuc}&MaNhom=GP01`
+    );
+  },
+  getListCoursePagination: async (page) => {
+    return await http.get(
+      `/api/QuanLyKhoaHoc/LayDanhSachKhoaHoc_PhanTrang?page=${page}&pageSize=12&MaNhom=GP01`
     );
   },
 };

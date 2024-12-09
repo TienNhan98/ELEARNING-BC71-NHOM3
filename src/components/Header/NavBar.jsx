@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Layout, Menu, Dropdown, Space } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { callApiKhoaHoc } from "../../service/callApiKhoaHoc";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function NavBar() {
   const { Header } = Layout;
-
+  const navigate = useNavigate();
   const [listDanhMucKhoaHoc, setListDanhMucKhoaHoc] = useState([]);
 
   useEffect(() => {
@@ -92,6 +92,9 @@ export default function NavBar() {
           <Menu.Item
             key="2"
             className="text-black font-bold hover:text-green-500 no-before-after"
+            onClick={() => {
+              navigate("/khoahoc");
+            }}
           >
             KHÓA HỌC
           </Menu.Item>

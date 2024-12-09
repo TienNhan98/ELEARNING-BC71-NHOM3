@@ -1,48 +1,39 @@
-import React from "react";
-import { useParams, NavLink, useHref, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { callApiKhoaHoc } from "../../../service/callApiKhoaHoc";
-import styles from "../courses/course-detail/DetailPage.module.scss";
+import React, { useEffect } from "react";
+
+import { useState } from "react";
+import styles from "./course-all.module.scss";
+import { callApiKhoaHoc } from "../../../../service/callApiKhoaHoc";
+import ReactPaginate from "react-paginate";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Card, Col, Popover, Row } from "antd";
-import avtELM from "../list-courses-by-cat/asset/avaElonmuck.png";
-import avtPPV from "../list-courses-by-cat/asset/avaPPV.png";
+import avtELM from "../../list-courses-by-cat/asset/avaElonmuck.png";
+import avtPPV from "../../list-courses-by-cat/asset/avaPPV.png";
 
-export default function CatetoryCourse() {
+export default function CourseAll() {
   const navigate = useNavigate();
-  const { maDanhMuc } = useParams();
-  const [listDanhMucKhoaHoc, setListDanhMucKhoaHoc] = useState([]);
-  const [courseByCatetory, setCourseByCatetory] = useState([]);
-
-  useEffect(() => {
-    callApiKhoaHoc
-      .layDanhMucKhoaHoc()
-      .then((result) => {
-        setListDanhMucKhoaHoc(result.data);
-      })
-      .catch((err) => {});
-  }, [maDanhMuc]);
-
-  // call api lấy khóa học theo danh mục
-  useEffect(() => {
-    callApiKhoaHoc
-      .getCourseByCatetory(maDanhMuc)
-      .then((result) => {
-        setCourseByCatetory(result.data);
-      })
-      .catch((err) => {});
-  }, [maDanhMuc]);
-
-  let nameCategory = listDanhMucKhoaHoc.find((item, index) => {
-    if (item.maDanhMuc === maDanhMuc) {
-      return item;
-    }
+  const [currentPage, setCurrentPage] = useState(1);
+  const [listCoursePagination, setListCoursePagination] = useState({
+    totalPages: 0,
+    items: [],
   });
+
+  let { totalPages, items } = listCoursePagination;
+
+  useEffect(() => {
+    callApiKhoaHoc
+      .getListCoursePagination(currentPage)
+      .then((result) => {
+        console.log("🚀 ~ .then ~ result:", result.data);
+        setListCoursePagination(result.data);
+      })
+      .catch((err) => {});
+  }, [currentPage]);
 
   // hàm render khóa học
   const renderCourseCategoryList = () => {
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
-        {courseByCatetory.map((item) => {
+        {items.map((item) => {
           const popoVercourseByCatetory = (
             <div>
               <Card style={{ width: 300 }}>
@@ -203,24 +194,86 @@ export default function CatetoryCourse() {
 
   return (
     <section>
-      <div className={styles.titleDetailCourse}>
-        <h3>Khóa học theo danh mục</h3>
-        <p>Hãy chọn khóa học mong muốn !!!</p>
+      <div className={styles.titleClasses}>
+        <h3>Khóa học</h3>
+        <p>Bắt đầu hành trình nào!!!</p>
       </div>
-      <div className="p-12">
-        <div className="">
-          <btn className="inline-block rounded-3xl py-3 px-2.5 cursor-default border-2 outline-none transition-all duration-500 ease-linear font-medium hover:border-2 hover:border-[#113d3c]   hover:scale-98">
-            <i className="fas fa-desktop " style={{ color: "#d74175" }}></i>
-            <span className="ml-2 ">
-              {nameCategory ? nameCategory.tenDanhMuc : ""}
-            </span>
-          </btn>
+      <div className={styles.classesContainer}>
+        <div className="grid grid-cols-6">
+          <div className={styles.classesBoxItem}>
+            <div className={styles.classesBox1}>
+              <h6>Chương trình học</h6>
+              <i className="fas fa-laptop"></i>
+              <p>300</p>
+            </div>
+          </div>
+          <div className={styles.classesBoxItem}>
+            <div className={styles.classesBox2}>
+              <h6>Nhà sáng tạo</h6>
+              <i className="fas fa-camera"></i>
+              <p>10000</p>
+            </div>
+          </div>
+          <div className={styles.classesBoxItem}>
+            <div className={styles.classesBox3}>
+              <h6>Nhà thiết kế</h6>
+              <i className="fas fa-briefcase"></i>
+              <p>400</p>
+            </div>
+          </div>
+          <div className={styles.classesBoxItem}>
+            <div className={styles.classesBox4}>
+              <h6>Bài giảng</h6>
+              <i className="fas fa-book"></i>
+              <p>3000</p>
+            </div>
+          </div>
+          <div className={styles.classesBoxItem}>
+            <div className={styles.classesBox5}>
+              <h6>Video</h6>
+              <i className="fas fa-play-circle"></i>
+              <p>40000</p>
+            </div>
+          </div>
+          <div className={styles.classesBoxItem}>
+            <div className={styles.classesBox6}>
+              <h6>Lĩnh vực</h6>
+              <i className="fas fa-dice-d20"></i>
+              <p>200</p>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Course list card */}
-        <div className="mt-10">
-          <div className="row">{renderCourseCategoryList()}</div>
-        </div>
+      {/* Course list card */}
+      <div className={styles.listCoursePagination}>
+        <h6 className="mb-10 text-lg">
+          <i className="fas fa-bookmark  pr-4 text-pink-500 font-600 text-lg"></i>
+          Danh sách khóa học
+        </h6>
+        <div className="row">{renderCourseCategoryList()}</div>
+      </div>
+      <div className="flex justify-center mt-10 mb-10">
+        <ReactPaginate
+          forcePage={currentPage - 1}
+          pageRangeDisplayed={3}
+          pageCount={totalPages}
+          containerClassName={styles.paginationPages}
+          pageClassName={styles.pageItem}
+          pageLinkClassName={styles.pageLinkPages}
+          nextClassName={styles.pageItem}
+          nextLinkClassName={styles.pageLinkPages}
+          previousClassName={styles.pageItem}
+          previousLinkClassName={styles.pageLinkPages}
+          breakClassName={styles.pageItem}
+          breakLinkClassName={styles.pageLinkPages}
+          activeClassName={styles.active}
+          nextLabel={<i className="bi bi-arrow-right "></i>}
+          previousLabel={<i className="bi bi-arrow-left "></i>}
+          onPageChange={({ selected }) => {
+            setCurrentPage(selected + 1);
+          }}
+        />
       </div>
     </section>
   );
