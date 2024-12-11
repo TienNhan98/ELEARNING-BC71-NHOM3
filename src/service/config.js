@@ -1,5 +1,6 @@
 import axios from "axios";
-
+import { turnOffLoading, turnOnLoading } from "../redux/spinnerSlice";
+import store from "../redux/store";
 export let http = axios.create({
   baseURL: "https://elearningnew.cybersoft.edu.vn",
   headers: {
@@ -9,5 +10,38 @@ export let http = axios.create({
       "bearer " + JSON.parse(localStorage.getItem("USER_LOGIN"))?.accessToken,
   },
 });
+
+// axios.get()
+// Add a request interceptor
+http.interceptors.request.use(
+  function (config) {
+    console.log("request đi:", config);
+    store.dispatch(turnOnLoading());
+    // Do something before request is sent
+    return config;
+  },
+  function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  }
+);
+
+// Add a response interceptor
+http.interceptors.response.use(
+  function (response) {
+    console.log("request về:", response);
+    store.dispatch(turnOffLoading());
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  },
+  function (error) {
+    store.dispatch(turnOffLoading());
+
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+  }
+);
 
 export default http;

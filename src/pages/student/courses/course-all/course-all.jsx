@@ -2,38 +2,24 @@ import React, { useEffect } from "react";
 
 import { useState } from "react";
 import styles from "./course-all.module.scss";
-import { callApiKhoaHoc } from "../../../../service/callApiKhoaHoc";
-import ReactPaginate from "react-paginate";
+
 import { NavLink, useNavigate } from "react-router-dom";
 import { Card, Col, Popover, Row } from "antd";
 import avtELM from "../../list-courses-by-cat/asset/avaElonmuck.png";
 import avtPPV from "../../list-courses-by-cat/asset/avaPPV.png";
+import { useSelector } from "react-redux";
+import Pagination from "../../../../components/Pagination/Pagination";
 
 export default function CourseAll() {
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [listCoursePagination, setListCoursePagination] = useState({
-    totalPages: 0,
-    items: [],
-  });
 
-  let { totalPages, items } = listCoursePagination;
-
-  useEffect(() => {
-    callApiKhoaHoc
-      .getListCoursePagination(currentPage)
-      .then((result) => {
-        console.log("🚀 ~ .then ~ result:", result.data);
-        setListCoursePagination(result.data);
-      })
-      .catch((err) => {});
-  }, [currentPage]);
+  const { coursesPagination } = useSelector((state) => state.courseSlice);
 
   // hàm render khóa học
   const renderCourseCategoryList = () => {
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
-        {items.map((item) => {
+        {coursesPagination.map((item) => {
           const popoVercourseByCatetory = (
             <div>
               <Card style={{ width: 300 }}>
@@ -94,7 +80,6 @@ export default function CourseAll() {
               </Card>
             </div>
           );
-
           return (
             <div className="flex justify-center" key={item.maKhoaHoc}>
               <Popover content={popoVercourseByCatetory}>
@@ -253,28 +238,7 @@ export default function CourseAll() {
         </h6>
         <div className="row">{renderCourseCategoryList()}</div>
       </div>
-      <div className="flex justify-center mt-10 mb-10">
-        <ReactPaginate
-          forcePage={currentPage - 1}
-          pageRangeDisplayed={3}
-          pageCount={totalPages}
-          containerClassName={styles.paginationPages}
-          pageClassName={styles.pageItem}
-          pageLinkClassName={styles.pageLinkPages}
-          nextClassName={styles.pageItem}
-          nextLinkClassName={styles.pageLinkPages}
-          previousClassName={styles.pageItem}
-          previousLinkClassName={styles.pageLinkPages}
-          breakClassName={styles.pageItem}
-          breakLinkClassName={styles.pageLinkPages}
-          activeClassName={styles.active}
-          nextLabel={<i className="bi bi-arrow-right "></i>}
-          previousLabel={<i className="bi bi-arrow-left "></i>}
-          onPageChange={({ selected }) => {
-            setCurrentPage(selected + 1);
-          }}
-        />
-      </div>
+      <Pagination />
     </section>
   );
 }

@@ -17,8 +17,8 @@ export let callApiKhoaHoc = {
       `/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${maDanhMuc}&MaNhom=GP01`
     );
   },
-  getListCoursePagination: async (page) => {
-    return await http.get(
+  getListCoursePagination: (page) => {
+    return http.get(
       `/api/QuanLyKhoaHoc/LayDanhSachKhoaHoc_PhanTrang?page=${page}&pageSize=12&MaNhom=GP01`
     );
   },
