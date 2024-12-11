@@ -15,6 +15,7 @@ import NotFoundLayout from "./pages/notFoundPage/not-found";
 import SearchResultsPage from "./pages/student/SearchResultsPage/SearchResultsPage";
 import CatetoryCourse from "./pages/student/catetory-course/catetory-course";
 import CourseAll from "./pages/student/courses/course-all/course-all";
+import PersonalInfo from "./pages/PersonalInfo/PersonalInfo";
 
 export default function App() {
   return (
@@ -42,6 +43,9 @@ export default function App() {
 
             {/* route hiển thị tất cả khóa học */}
             <Route path="/khoahoc" element={<CourseAll />} />
+
+            {/* route thông tin cá nhân */}
+            <Route path="/thongtincanhan" element={<PersonalInfo />} />
           </Route>
 
           {/* Admin routes */}

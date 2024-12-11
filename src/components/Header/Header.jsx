@@ -100,8 +100,9 @@ export default function Header() {
             >
               <a
                 className="_blank"
-                href="#"
-                onClick={(e) => e.preventDefault()}
+                onClick={() => {
+                  navigate("/thongtincanhan");
+                }}
               >
                 <img
                   className="border rounded-circle object-fit object-cover opacity-90 hover:opacity-100 duration-300 transition-all"

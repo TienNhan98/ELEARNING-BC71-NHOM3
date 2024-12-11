@@ -4,12 +4,11 @@ import styles from "../courses/course-detail/DetailPage.module.scss";
 import { Button, Checkbox, Col, Divider, Row } from "antd";
 import { StarFilled } from "@ant-design/icons";
 import thaySy from ".././homepage/asset/listDangVienHangDau/thaySy.jpg";
-import styless from "./SearchResultsPage.module.scss";
+// import styless from "./SearchResultsPage.module.scss";
 
 const SearchResultsPage = () => {
-  // const { searchValue } = useParams(); // Lấy giá trị từ URL
   const location = useLocation();
-  const { results } = location.state || { results: [] }; // Tránh lỗi nếu state rỗng
+  const { results } = location.state || { results: [] };
   const navigate = useNavigate();
 
   return (
