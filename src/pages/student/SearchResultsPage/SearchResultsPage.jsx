@@ -1,13 +1,16 @@
 import React from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../courses/course-detail/DetailPage.module.scss";
 import { Button, Checkbox, Col, Divider, Row } from "antd";
 import { StarFilled } from "@ant-design/icons";
+import thaySy from ".././homepage/asset/listDangVienHangDau/thaySy.jpg";
+import styless from "./SearchResultsPage.module.scss";
 
 const SearchResultsPage = () => {
   // const { searchValue } = useParams(); // Lấy giá trị từ URL
   const location = useLocation();
   const { results } = location.state || { results: [] }; // Tránh lỗi nếu state rỗng
+  const navigate = useNavigate();
 
   return (
     <section>
@@ -55,29 +58,29 @@ const SearchResultsPage = () => {
                 <h4>Đánh giá</h4>
                 <Checkbox.Group className="flex flex-col">
                   <Checkbox value="rating1">
-                    <StarFilled style={{ color: "gold" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
                   </Checkbox>
                   <Checkbox value="rating2">
-                    <StarFilled style={{ color: "gold" }} />
-                    <StarFilled style={{ color: "gold" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
                   </Checkbox>
-                  <Checkbox value="rating3">
-                    <StarFilled style={{ color: "gold" }} />
-                    <StarFilled style={{ color: "gold" }} />
-                    <StarFilled style={{ color: "gold" }} />
+                  <Checkbox value="rating3" style={{ color: "gold" }}>
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
                   </Checkbox>
                   <Checkbox value="rating4">
-                    <StarFilled style={{ color: "gold" }} />
-                    <StarFilled style={{ color: "gold" }} />
-                    <StarFilled style={{ color: "gold" }} />
-                    <StarFilled style={{ color: "gold" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
                   </Checkbox>
                   <Checkbox value="rating5">
-                    <StarFilled style={{ color: "gold" }} />
-                    <StarFilled style={{ color: "gold" }} />
-                    <StarFilled style={{ color: "gold" }} />
-                    <StarFilled style={{ color: "gold" }} />
-                    <StarFilled style={{ color: "gold" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
+                    <StarFilled style={{ color: "gold", fontSize: "20px" }} />
                   </Checkbox>
                 </Checkbox.Group>
               </div>
@@ -85,6 +88,7 @@ const SearchResultsPage = () => {
           </Col>
 
           <Col span={19}>
+            <h3>Hiển thị {results.length} kết quả</h3>
             <div
               style={{
                 padding: "20px",
@@ -100,7 +104,6 @@ const SearchResultsPage = () => {
                 }}
               >
                 {/* Hiển thị số lượng kết quả tìm được */}
-                <p>Hiển thị {results.length} kết quả</p>
 
                 {results.length > 0 ? (
                   results.map((course) => (
@@ -112,15 +115,73 @@ const SearchResultsPage = () => {
                             alt={course.tenKhoaHoc}
                             style={{
                               width: "100%",
-                              height: "auto",
+                              height: "100%",
                               objectFit: "cover",
                             }}
                           />
                         </Col>
-                        <Col span={18}>
+                        <Col span={18} className="flex flex-col">
                           <h3>{course.tenKhoaHoc}</h3>
-                          <p>{course.moTa}</p>
-                          <Button type="primary">Xem chi tiết</Button>
+                          <p style={{ color: "#8c8c8c" }}>
+                            {course.moTa.length > 100
+                              ? `${course.moTa.substring(0, 50)}...`
+                              : course.moTa}
+                          </p>
+                          <div
+                            className="flex items-center mb-1 space-x-2"
+                            style={{ fontSize: "16px", color: "#8c8c8c" }}
+                          >
+                            <span>
+                              <i
+                                className="far fa-clock mr-1"
+                                style={{ color: "#f5c002" }}
+                              ></i>
+                              8 giờ
+                            </span>
+                            <span>
+                              <i
+                                className="far fa-calendar-alt mr-1"
+                                style={{ color: "#f06f68" }}
+                              ></i>
+                              4 Tuần
+                            </span>
+                            <span>
+                              <i
+                                className="fas fa-signal mr-1"
+                                style={{ color: "#65c9ff" }}
+                              ></i>
+                              All Level
+                            </span>
+                          </div>
+                          <div>
+                            <StarFilled style={{ color: "gold" }} />
+                            <StarFilled style={{ color: "gold" }} />
+                            <StarFilled style={{ color: "gold" }} />
+                            <StarFilled style={{ color: "gold" }} />
+                            <StarFilled style={{ color: "gold" }} />
+                          </div>
+                          <div className="flex items-center my-3">
+                            <img
+                              className="rounded-full mr-2"
+                              src={thaySy}
+                              style={{
+                                width: "40px",
+                                height: "40px",
+                                lineHeight: "40px",
+                              }}
+                            />
+                            <h6>Trần Quang Sĩ</h6>
+                          </div>
+                          <Button
+                            className="self-end hover:scale-90 transition-all duration-500"
+                            style={{ backgroundColor: "#ffc107" }}
+                            type="primary"
+                            onClick={() => {
+                              navigate("/chitiet/:maKhoaHoc");
+                            }}
+                          >
+                            XEM CHI TIẾT
+                          </Button>
                         </Col>
                       </Row>
                       <Divider />

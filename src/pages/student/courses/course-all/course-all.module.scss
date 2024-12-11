@@ -1,0 +1,209 @@
+.titleClasses {
+  padding: 50px;
+  text-transform: uppercase;
+  background-color: #41b294;
+  color: #fff;
+  text-align: left;
+  h3 {
+    font-size: 30px;
+    font-weight: 500;
+  }
+  p {
+    font-size: 13px;
+  }
+}
+
+.classesContainer {
+  padding: 50px;
+
+  .classesBoxItem {
+    padding: 0;
+    .classesBox1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      text-transform: uppercase;
+      height: 100%;
+      padding: 30px 20px;
+      text-align: center;
+      background-color: #264653;
+      h6 {
+        padding-bottom: 10px;
+        font-weight: 600;
+      }
+      i {
+        font-size: 30px;
+      }
+      p {
+        font-size: 20px;
+      }
+    }
+
+    .classesBox3 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      text-transform: uppercase;
+      height: 100%;
+      padding: 30px 50px;
+      text-align: center;
+      background-color: #e9c46a;
+      h6 {
+        padding-bottom: 10px;
+        font-weight: 600;
+      }
+      i {
+        font-size: 30px;
+      }
+      p {
+        font-size: 20px;
+      }
+    }
+    .classesBox4 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      text-transform: uppercase;
+      height: 100%;
+      padding: 30px 60px;
+      text-align: center;
+      background-color: #f4a261;
+      h6 {
+        padding-bottom: 10px;
+        font-weight: 600;
+      }
+      i {
+        font-size: 30px;
+      }
+      p {
+        font-size: 20px;
+      }
+    }
+    .classesBox5 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      text-transform: uppercase;
+      height: 100%;
+      padding: 30px 70px;
+      text-align: center;
+      background-color: #ee8959;
+      h6 {
+        padding-bottom: 10px;
+        font-weight: 600;
+      }
+      i {
+        font-size: 30px;
+      }
+      p {
+        font-size: 20px;
+      }
+    }
+    .classesBox6 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      text-transform: uppercase;
+      height: 100%;
+      padding: 30px 60px;
+      text-align: center;
+      background-color: #e76f51;
+      h6 {
+        padding-bottom: 10px;
+        font-weight: 600;
+      }
+      i {
+        font-size: 30px;
+      }
+      p {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .classesBox2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    text-transform: uppercase;
+    height: 100%;
+    padding: 30px 40px;
+    text-align: center;
+    background-color: #2a9d8f;
+    h6 {
+      padding-bottom: 10px;
+      font-weight: 600;
+    }
+    i {
+      font-size: 30px;
+    }
+    p {
+      font-size: 20px;
+    }
+  }
+}
+
+/* Paginate */
+.paginationPages {
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 0.25rem;
+  margin-bottom: 10px;
+}
+
+.pageLinkPages {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  margin-left: 5px;
+  line-height: 1.25;
+  color: #000000;
+  background-color: #fff;
+  border: 2px solid #d74175;
+  border-radius: 5px;
+}
+
+.pageItem {
+  &.active {
+    .pageLinkPages {
+      z-index: 3;
+      color: #fff;
+      background-color: #d74175;
+      border-color: rgba(17, 61, 60, 0.5);
+    }
+  }
+}
+
+.pageLinkPages:focus {
+  z-index: 3;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(1, 135, 126, 0.25);
+}
+
+.pageLinkPages:hover {
+  z-index: 2;
+  color: #fff;
+  text-decoration: none;
+  background-color: #d74175;
+  border-color: #dee2e6;
+}
+
+// List card pagination
+.listCoursePagination {
+  padding: 50px;
+}
