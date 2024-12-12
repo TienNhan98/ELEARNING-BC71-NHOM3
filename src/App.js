@@ -3,19 +3,19 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import StudentLayout from "./template/layouts/student-layout";
 
-import ListCoursesByCat from "./pages/student/list-courses-by-cat/list-courses-by-cat";
+// import ListCoursesByCat from "./pages/student/list-courses-by-cat/list-courses-by-cat";  check lại
 import CourseDetail from "./pages/student/courses/course-detail/course-detail";
-import AuthGuard from "./guard/auth-guard";
+// import AuthGuard from "./guard/auth-guard"; check lại
 import AdminGuard from "./guard/admin-guard";
 import AdminLayout from "./template/layouts/admin-layout";
 import AdminListCourses from "./pages/admin/courses/list-courses";
 import StudentHome from "./pages/student/home/student-home";
 import LoginPage from "./pages/LoginPage/LoginPage";
-import NotFoundLayout from "./pages/notFoundPage/not-found";
 import SearchResultsPage from "./pages/student/SearchResultsPage/SearchResultsPage";
 import CatetoryCourse from "./pages/student/catetory-course/catetory-course";
 import CourseAll from "./pages/student/courses/course-all/course-all";
 import PersonalInfo from "./pages/PersonalInfo/PersonalInfo";
+import NotFoundLayout from "./pages/notFoundPage/NotFoundLayout";
 
 export default function App() {
   return (
