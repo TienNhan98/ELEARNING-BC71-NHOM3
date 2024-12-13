@@ -2,12 +2,13 @@ import React, { useEffect } from "react";
 import styles from "../../pages/student/courses/course-all/course-all.module.scss";
 import ReactPaginate from "react-paginate";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchCoursesPagination } from "../../redux/courseSlice";
 
 export default function Pagination() {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
+  const { totalPages } = useSelector((state) => state.courseSlice);
 
   useEffect(() => {
     dispatch(fetchCoursesPagination(currentPage));
@@ -17,7 +18,7 @@ export default function Pagination() {
       <ReactPaginate
         forcePage={currentPage - 1}
         pageRangeDisplayed={3}
-        pageCount={8}
+        pageCount={totalPages}
         containerClassName={styles.paginationPages}
         pageClassName={styles.pageItem}
         pageLinkClassName={styles.pageLinkPages}

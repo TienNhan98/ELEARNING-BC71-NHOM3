@@ -54,7 +54,7 @@ const courseSlice = createSlice({
         state.totalPages = action.payload.totalPages; //
       })
       .addCase(fetchCoursesPagination.rejected, (state, action) => {
-        state.courses = [];
+        state.coursesPagination = [];
       });
     // Xử lý các trạng thái cho fetchAllCourses
     //   .addCase(fetchAllCourses.pending, (state) => {

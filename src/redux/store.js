@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./userSlice";
 import courseSlice from "./courseSlice";
 import spinnerSlice from "./spinnerSlice";
+import userAdminSlice from "./userAdminSlice";
 
 const store = configureStore({
   reducer: {
@@ -9,6 +10,7 @@ const store = configureStore({
     userSlice: userSlice,
     courseSlice: courseSlice,
     spinnerSlice: spinnerSlice,
+    userAdminSlice: userAdminSlice,
   },
 });
 
