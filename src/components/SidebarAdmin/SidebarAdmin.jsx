@@ -109,7 +109,10 @@ const SidebarAdmin = () => {
   };
 
   const handleLogout = () => {
-    console.log("Đăng xuất");
+    //1. xóa localStorage
+    localStorage.removeItem("USER_LOGIN");
+    //2. đá ra trang Login
+    window.location.href = "/";
   };
 
   return (

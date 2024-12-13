@@ -1,14 +1,15 @@
 // src/components/ManageUsers.jsx
 import React, { useEffect, useState } from "react";
-import { Settings } from "lucide-react"; // Hoặc sử dụng react-icons nếu bạn đã cài đặt
+import { Settings } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-
 import ReactPaginate from "react-paginate";
 import { fetchUserListsAdmin } from "../../../redux/userAdminSlice";
 import styles from "../../student/courses/course-all/course-all.module.scss";
+import AddUserModal from "./CreateUserModal";
 
 export default function ManageUsers() {
   const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Lấy dữ liệu từ store
   const { userLists, status, error, totalPages } = useSelector(
@@ -26,7 +27,9 @@ export default function ManageUsers() {
   }, [currentPage, dispatch]);
 
   //hàm thêm user
-  const handleAddUser = () => {};
+  const handleAddUser = () => {
+    setIsModalOpen(true);
+  };
 
   // Hàm xử lý các nút trong cột Cài đặt
   const handleRegister = (user) => {
@@ -114,6 +117,13 @@ export default function ManageUsers() {
         >
           Thêm người dùng
         </button>
+        {/* Modal */}
+        {isModalOpen && (
+          <AddUserModal
+            isOpen={isModalOpen}
+            closeModal={() => setIsModalOpen(false)} // Đóng modal
+          />
+        )}
       </div>
 
       {/* Hiển thị loading */}

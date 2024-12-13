@@ -12,7 +12,7 @@ export default function Pagination() {
 
   useEffect(() => {
     dispatch(fetchCoursesPagination(currentPage));
-  }, [currentPage]);
+  }, [currentPage, dispatch]);
   return (
     <div className="flex justify-center mt-10 mb-10">
       <ReactPaginate
