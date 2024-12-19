@@ -6,7 +6,10 @@ import ReactPaginate from "react-paginate";
 
 import styles from "../../student/courses/course-all/course-all.module.scss";
 import AddUserModal from "./CreateUserModal";
-import { fetchUserListsAll } from "../../../redux/userAdminSlice";
+import {
+  fetchSearchUsers,
+  fetchUserListsAll,
+} from "../../../redux/userAdminSlice";
 import UpdateUserModal from "./UpdateUserModal";
 import Swal from "sweetalert2";
 
@@ -17,6 +20,7 @@ export default function ManageUsers() {
   const [modalType, setModalType] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   // Lấy dữ liệu từ store
   const { userListAll } = useSelector((state) => state.userAdminSlice);
@@ -155,18 +159,41 @@ export default function ManageUsers() {
       </tr>
     );
   };
+  // Cập nhật danh sách người dùng khi tìm kiếm
+  const handleSearchChange = async (event) => {
+    const keyword = event.target.value;
+    setSearchKeyword(keyword);
+
+    // Dispatch action để tìm kiếm
+    if (keyword.trim()) {
+      dispatch(fetchSearchUsers(keyword.trim()));
+    } else {
+      // Nếu từ khóa rỗng, lấy lại toàn bộ danh sách người dùng
+      dispatch(fetchUserListsAll());
+    }
+  };
 
   return (
     <div className="p-4 bg-white rounded-lg shadow overflow-x-auto">
       <h2 className="text-2xl font-semibold mb-4">Quản lý người dùng</h2>
       {/* Nút thêm người dùng */}
-      <div className="flex justify-start mb-4">
+      <div className="flex justify-between items-center mb-4">
         <button
           className="p-2 bg-green-500 text-white rounded hover:bg-green-600 w-full sm:w-auto"
           onClick={handleAddUser} // Thêm hàm xử lý khi nhấn nút
         >
           Thêm người dùng
         </button>
+
+        {/* Thanh tìm kiếm */}
+        <input
+          type="text"
+          placeholder="Nhập vào tài khoản hoặc họ tên người dùng"
+          value={searchKeyword}
+          onChange={handleSearchChange}
+          className="border p-2 rounded w-1/3"
+        />
+
         {/* Modal */}
         {isModalOpen && modalType === "add" && (
           <AddUserModal isOpen={isModalOpen} closeModal={closeModal} />

@@ -39,6 +39,22 @@ export const fetchUserListsAll = createAsyncThunk(
   }
 );
 
+export const fetchSearchUsers = createAsyncThunk(
+  "userAdmin/fetchSearchUsers",
+  async (keyword, { rejectWithValue }) => {
+    try {
+      const response = await callApiNguoiDung.searchUsers(keyword);
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 // Slice cho quản lý người dùng
 const userAdminSlice = createSlice({
   name: "userAdminSlice",
@@ -53,19 +69,6 @@ const userAdminSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // .addCase(fetchUserListsAdmin.pending, (state) => {
-      //   state.status = "loading";
-      //   state.error = null;
-      // })
-      // .addCase(fetchUserListsAdmin.fulfilled, (state, action) => {
-      //   state.status = "succeeded";
-      //   state.totalPages = action.payload.totalPages;
-      //   state.userLists = action.payload.items; // Cập nhật danh sách người dùng
-      // })
-      // .addCase(fetchUserListsAdmin.rejected, (state, action) => {
-      //   state.status = "failed";
-      //   state.error = action.payload || "Không thể lấy danh sách người dùng.";
-      // })
 
       .addCase(fetchUserListsAll.pending, (state) => {
         state.status = "loading";
@@ -77,6 +80,15 @@ const userAdminSlice = createSlice({
       .addCase(fetchUserListsAll.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload || "Không thể lấy danh sách người dùng.";
+      })
+
+      .addCase(fetchSearchUsers.fulfilled, (state, action) => {
+        state.userListAll = action.payload;
+        state.status = "succeeded";
+      })
+      .addCase(fetchSearchUsers.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload || "Không thể tìm kiếm người dùng.";
       });
   },
 });

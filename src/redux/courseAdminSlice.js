@@ -19,6 +19,23 @@ export const fetchCourseListAdmin = createAsyncThunk(
     }
   }
 );
+
+export const fetchSearchCourses = createAsyncThunk(
+  "courseAdmin/fetchSearchCourses",
+  async (keyword, { rejectWithValue }) => {
+    try {
+      const response = await callApiKhoaHoc.searchCourse(keyword);
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 const initialState = {
   courseLists: [],
   loading: false,
@@ -42,6 +59,14 @@ const courseAdminSlice = createSlice({
       .addCase(fetchCourseListAdmin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Unable to fetch course list.";
+      })
+      .addCase(fetchSearchCourses.fulfilled, (state, action) => {
+        state.courseLists = action.payload;
+        state.status = "succeeded";
+      })
+      .addCase(fetchSearchCourses.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload || "Không thể tìm kiếm khóa học.";
       });
   },
 });
