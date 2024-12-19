@@ -8,6 +8,9 @@ export const callApiKhoaHoc = {
   layChiTietKhoaHoc: (maKhoaHoc) =>
     http.get(`/api/QuanLyKhoaHoc/LayThongTinKhoaHoc?maKhoaHoc=${maKhoaHoc}`),
 
+  huyGhiDanh: (maKhoaHoc, taiKhoan) =>
+    http.post("/api/QuanLyKhoaHoc/HuyGhiDanh", { maKhoaHoc, taiKhoan }),
+
   registerCourseAPI: (infoRegister) =>
     http.post("/api/QuanLyKhoaHoc/DangKyKhoaHoc", infoRegister),
 
