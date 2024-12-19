@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import StudentLayout from "./template/layouts/student-layout";
 
@@ -8,7 +8,7 @@ import CourseDetail from "./pages/student/courses/course-detail/course-detail";
 // import AuthGuard from "./guard/auth-guard"; check lại
 import AdminGuard from "./guard/admin-guard";
 import AdminLayout from "./template/layouts/admin-layout";
-import AdminListCourses from "./pages/admin/courses/list-courses";
+
 import StudentHome from "./pages/student/home/student-home";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SearchResultsPage from "./pages/student/SearchResultsPage/SearchResultsPage";
@@ -16,10 +16,14 @@ import CatetoryCourse from "./pages/student/catetory-course/catetory-course";
 import CourseAll from "./pages/student/courses/course-all/course-all";
 import PersonalInfo from "./pages/PersonalInfo/PersonalInfo";
 import NotFoundLayout from "./pages/notFoundPage/NotFoundLayout";
+import Spiner from "./components/Spinner/Spinner";
+import ManageUsers from "./pages/admin/users/ManageUsers";
+import ManageCourses from "./pages/admin/courses/ManageCourses ";
 
 export default function App() {
   return (
     <div>
+      <Spiner />
       <BrowserRouter>
         <Routes>
           {/* Login routes */}
@@ -57,7 +61,9 @@ export default function App() {
               </AdminGuard>
             }
           >
-            <Route index element={<AdminListCourses />} />
+            <Route index element={<Navigate to="quanlynguoidung" />} />
+            <Route path="quanlynguoidung" element={<ManageUsers />} />
+            <Route path="quanlykhoahoc" element={<ManageCourses />} />
           </Route>
 
           {/* Not Found Route */}

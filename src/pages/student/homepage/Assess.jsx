@@ -1,5 +1,5 @@
 import React from "react";
-import { Carousel, Card } from "antd";
+import { Card } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -58,7 +58,7 @@ const experts = [
 const MyCarousel = () => {
   return (
     <div className="my-5">
-      <a href="#" className="no-underline inline-block ml-7 mb-3">
+      <h6 className="no-underline inline-block ml-7 mb-3">
         <p
           className="font-bold"
           style={{
@@ -67,7 +67,7 @@ const MyCarousel = () => {
         >
           Giảng Viên Hàng Đầu
         </p>
-      </a>
+      </h6>
       <div className="carousel-container" style={{ overflow: "hidden" }}>
         <Slider
           autoplay

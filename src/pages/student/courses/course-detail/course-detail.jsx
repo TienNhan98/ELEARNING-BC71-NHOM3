@@ -50,6 +50,9 @@ export default function CourseDetail() {
       const response = await callApiKhoaHoc.registerCourseAPI(infoRegisrer);
       Swal.fire({
         title: "Đăng kí thành công",
+        text: `Khóa học: ${
+          response.data?.courseName || "Đã đăng ký thành công"
+        }`,
         icon: "success",
         timer: 2000,
         showConfirmButton: false,
@@ -67,7 +70,6 @@ export default function CourseDetail() {
     }
   };
 
-  // console.log("🚀 ~ ListCoursesByCat ~ listKhoaHoc:", listKhoaHoc);
   useEffect(() => {
     callApiKhoaHoc
       .layChiTietKhoaHoc(maKhoaHoc)
@@ -76,7 +78,7 @@ export default function CourseDetail() {
         setCourseDetail(result.data);
       })
       .catch((err) => {});
-  }, []);
+  }, [maKhoaHoc]);
 
   return (
     <section className=" mx-auto ">
@@ -434,7 +436,7 @@ export default function CourseDetail() {
       </div>
 
       {/* khoaHocThamKhao */}
-      <a href="#" className="no-underline inline-block ml-5 mt-3">
+      <h6 className="no-underline inline-block ml-5 mt-3">
         <p
           className="font-bold"
           style={{
@@ -443,7 +445,7 @@ export default function CourseDetail() {
         >
           Khóa học tham khảo
         </p>
-      </a>
+      </h6>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
         {khoaHocThamKhao.map((item) => {
           const popoVerKhoaHocThamKhao = (

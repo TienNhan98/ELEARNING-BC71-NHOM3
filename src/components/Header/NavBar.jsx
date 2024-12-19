@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Layout, Menu, Dropdown, Space } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
-import { callApiKhoaHoc } from "../../service/callApiKhoaHoc";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategoryCourses } from "../../redux/courseSlice";
 
 export default function NavBar() {
   const { Header } = Layout;
   const navigate = useNavigate();
-  const [listDanhMucKhoaHoc, setListDanhMucKhoaHoc] = useState([]);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    callApiKhoaHoc
-      .layDanhMucKhoaHoc()
-      .then((result) => {
-        console.log(result.data);
-        setListDanhMucKhoaHoc(result.data);
-      })
-      .catch((err) => {});
+    dispatch(fetchCategoryCourses());
   }, []);
+
+  const { categories } = useSelector((state) => {
+    console.log(state.courseSlice);
+    return state.courseSlice;
+  });
 
   // Menu con cho Danh mục
   const categoryMenu = (
     <Menu className="bg-[#41b294] bg-opacity-30 space-y-3">
-      {listDanhMucKhoaHoc.map((item) => (
+      {categories.map((item) => (
         <Menu.Item key={item.maDanhMuc || item.tenDanhMuc}>
           <NavLink
             to={`/danhmuckhoahoc/${item.maDanhMuc}`}

@@ -7,8 +7,6 @@ import { callApiNguoiDung } from "../../service/callApiNguoiDung";
 export default function PersonalInfo() {
   const [activeTab, setActiveTab] = useState("personalInfo");
   const [infoStudent, setInfoStudent] = useState([]);
-  // console.log("🚀 ~ PersonalInfo ~ infoStudent:", infoStudent);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
 
@@ -50,7 +48,7 @@ export default function PersonalInfo() {
 
     // Nếu mật khẩu không được nhập thì loại bỏ nó
     if (!values.matKhau) delete updatedData.matKhau;
-
+    console.log("Dữ liệu gửi lên API:", updatedData); // Kiểm tra dữ liệu
     // Gọi API cập nhật
     callApiNguoiDung
       .capNhatThongTinNguoiDung(updatedData)
@@ -133,13 +131,19 @@ export default function PersonalInfo() {
   const coursesContent = (
     <div className="p-4">
       <h3 className="text-xl font-bold mb-2">Khóa học</h3>
-      <ul className="list-disc ml-5">
-        {infoStudent?.khoaHoc?.map((course, index) => (
-          <li key={index}>
-            {/* <strong>{course.tenKhoaHoc}</strong>: {course.moTa} */}
-          </li>
-        ))}
-      </ul>
+      {/* Kiểm tra nếu chiTietKhoaHocGhiDanh có dữ liệu */}
+      {infoStudent?.chiTietKhoaHocGhiDanh &&
+      infoStudent.chiTietKhoaHocGhiDanh.length > 0 ? (
+        <ul className="list-disc ml-5">
+          {infoStudent.chiTietKhoaHocGhiDanh.map((course) => (
+            <li key={course.maKhoaHoc}>
+              <strong>{course.tenKhoaHoc}</strong>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Không có khóa học nào.</p> // Thông báo nếu không có khóa học
+      )}
     </div>
   );
   console.log("🚀 ~ PersonalInfo ~ infoStudent:", infoStudent);
