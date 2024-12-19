@@ -11,8 +11,25 @@ import { normalizeString } from "../../untils/normalize"; // Thêm import hàm n
 import { callApiKhoaHoc } from "../../service/callApiKhoaHoc";
 
 export default function Header() {
+  const [isScrolled, setIsScrolled] = useState(false);
   let user = useSelector((state) => state.userSlice.dataLogin);
   let navigate = useNavigate();
+
+  // Lắng nghe sự kiện scroll để cập nhật trạng thái
+  const handleScroll = () => {
+    if (window.scrollY > 50) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   // Xử lý tìm kiếm và điều hướng
   const handleSearch = async (value) => {
@@ -49,10 +66,6 @@ export default function Header() {
     }
   };
 
-  const handleClick = (e) => {
-    navigate("/");
-  };
-
   const handleLogout = () => {
     localStorage.removeItem("USER_LOGIN");
     window.location.href = "/login";
@@ -61,56 +74,67 @@ export default function Header() {
   const dropdownContent = (
     <div
       onClick={handleLogout}
-      className="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-white shadow-md"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "40px",
+        height: "40px",
+        borderRadius: "50%",
+        cursor: "pointer",
+      }}
+      className="absolute top-0 left-1/2 transform -translate-x-1/2 hover:top-0 transition-all duration-500 ease-in-out  hover:bg-gray-200"
     >
-      <PoweroffOutlined className="text-[24px] text-[#f6ba35] font-bold" />
+      <PoweroffOutlined
+        style={{
+          fontSize: "24px",
+          color: "#f6ba35",
+          fontWeight: "bold",
+        }}
+      />
     </div>
   );
 
   let renderMenu = () => {
     if (user) {
       return (
-        <div className="flex items-center justify-end p-4">
-          <Dropdown
-            overlay={dropdownContent}
-            trigger={["hover"]}
-            placement="rightTop"
-            overlayStyle={{
-              top: "50px",
-              left: "1460px",
-              position: "absolute",
-            }}
-          >
-            <div className="flex items-center space-x-4 h-16">
-              {/* Biểu tượng cài đặt nếu là GV */}
-              {user.maLoaiNguoiDung === "GV" && (
-                <span className="flex items-center">
-                  <NavLink to="/admin">
-                    <i className="fas fa-cog cursor-pointer text-xl text-[#f6ba35]" />
-                  </NavLink>
-                </span>
-              )}
-
-              {/* Avatar và liên kết thông tin cá nhân */}
-              <a
-                className="flex items-center"
-                onClick={() => {
-                  navigate("/thongtincanhan");
-                }}
+        <div className="daDangNhap relative">
+          <div className="relative flex items-center gap-4">
+            {user.maLoaiNguoiDung === "GV" && (
+              <div
+                onClick={() => navigate("/admin")}
+                className="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-gray-200 transition-all duration-300"
               >
-                <img
-                  className="border rounded-full object-cover opacity-90 hover:opacity-100 duration-300 transition-all w-16 h-16 cursor-pointer"
-                  src={avt}
-                  alt="Avatar"
-                />
-              </a>
+                <i className="fas fa-cog text-xl text-[#f6ba35] font-bold"></i>
+              </div>
+            )}
+
+            <div className="relative">
+              <Dropdown
+                overlay={dropdownContent}
+                trigger={["hover"]}
+                placement="bottomCenter"
+              >
+                <a
+                  className="_blank"
+                  onClick={() => {
+                    navigate("/thongtincanhan");
+                  }}
+                >
+                  <img
+                    className="border rounded-full object-cover opacity-90 hover:opacity-100 duration-300 transition-all w-16 h-16 cursor-pointer"
+                    src={avt}
+                    alt="Avatar"
+                  />
+                </a>
+              </Dropdown>
             </div>
-          </Dropdown>
+          </div>
         </div>
       );
     } else {
       return (
-        <div className="flex justify-end items-center ml-4 ">
+        <div className="flex justify-end items-center ml-4 chuaDangNhap">
           <NavLink
             to="/login"
             className="btn btn-warning font-bold text-white hover:scale-105 duration-300 transition-all"
@@ -123,18 +147,33 @@ export default function Header() {
   };
 
   return (
-    <div className="m-3 flex justify-center items-center">
-      <a href="#" className="inline-block mr-2" onClick={handleClick}>
-        <div className=" transform transition-transform duration-300 hover:scale-105">
-          <img src={logo} alt="Logo" style={{ width: 250 }} />
+    <div
+      className={`${
+        isScrolled
+          ? "fixed top-0 left-0 w-full bg-white shadow-md z-50 opacity-100"
+          : "relative opacity-90"
+      } transition-all duration-500 ease-in-out`}
+    >
+      <div className="flex flex-col md:flex-row items-center justify-between px-4 py-2">
+        {/* Logo */}
+        <a
+          href="#"
+          className="inline-block mb-2 md:mb-0 mr-2"
+          onClick={() => navigate("/")}
+        >
+          <img src={logo} alt="Logo" className="w-32 md:w-48 lg:w-60" />
+        </a>
+
+        {/* Search */}
+        <div className="w-full md:w-auto flex justify-center items-center mb-2 md:mb-0">
+          <SearchLogicComponent onSearch={handleSearch} />
         </div>
-      </a>
-      <div className=" ml-2 flex justify-center items-center">
-        <SearchLogicComponent onSearch={handleSearch} />
-      </div>
-      <div className="flex justify-end items-center ml-64">
-        <NavBar />
-        <div>{renderMenu()}</div>
+
+        {/* NavBar & User Menu */}
+        <div className="flex flex-col sm:flex-row justify-end items-center w-full  md:w-auto ml-0 md:ml-4 lg:ml-64 gap-2">
+          <NavBar />
+          {renderMenu()}
+        </div>
       </div>
     </div>
   );

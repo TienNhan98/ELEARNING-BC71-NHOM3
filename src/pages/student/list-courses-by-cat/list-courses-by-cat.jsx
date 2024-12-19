@@ -36,7 +36,7 @@ export default function ListCoursesByCat() {
           Khóa học phổ biến
         </p>
       </h6>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
         {topKhoaHocPhoBien.map((item) => {
           const popoVerKhoaHocPhoBien = (
             <div>
@@ -205,7 +205,7 @@ export default function ListCoursesByCat() {
           Khóa học tham khảo
         </p>
       </h6>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
         {khoaHocThamKhao.map((item) => {
           const popoVerKhoaHocThamKhao = (
             <div>
@@ -401,7 +401,7 @@ export default function ListCoursesByCat() {
           Khóa học khác
         </p>
       </h6>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
         {cacKhoaHoc.map((item) => {
           const popoVerCacKhoaHoc = (
             <div>

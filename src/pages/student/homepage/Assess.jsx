@@ -56,6 +56,31 @@ const experts = [
 ];
 
 const MyCarousel = () => {
+  const sliderSettings = {
+    autoplay: true,
+    slidesToShow: 5, // Desktop default
+    slidesToScroll: 1,
+    dots: false,
+    swipeToSlide: true,
+    draggable: true,
+    responsive: [
+      {
+        breakpoint: 1024, // Tablet
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768, // Mobile
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
   return (
     <div className="my-5">
       <h6 className="no-underline inline-block ml-7 mb-3">
@@ -69,14 +94,7 @@ const MyCarousel = () => {
         </p>
       </h6>
       <div className="carousel-container" style={{ overflow: "hidden" }}>
-        <Slider
-          autoplay
-          slidesToShow={5}
-          slidesToScroll={1}
-          dots={false}
-          swipeToSlide={true}
-          draggable={true}
-        >
+        <Slider {...sliderSettings}>
           {experts.map((expert, index) => (
             <div key={index} className="flex justify-center">
               <Card
