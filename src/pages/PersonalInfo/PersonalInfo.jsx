@@ -69,18 +69,11 @@ export default function PersonalInfo() {
       .then((result) => {
         message.success("Cập nhật thông tin thành công!");
 
-<<<<<<< HEAD
         // Cập nhật lại state và localStorage nhưng giữ nguyên accessToken
         const updatedUserData = { ...currentUserData, ...result.data };
         localStorage.setItem("USER_LOGIN", JSON.stringify(updatedUserData));
         setInfoStudent(updatedUserData);
 
-=======
-        // Cập nhật state và local storage
-        console.log("Dữ liệu sau khi cập nhật:", result.data);
-        localStorage.setItem("USER_LOGIN", JSON.stringify(result));
-        setInfoStudent(result.data);
->>>>>>> feature-login-admin
         // Reset form và đóng modal
         form.resetFields();
         setIsModalOpen(false);
