@@ -3,24 +3,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { callApiNguoiDung } from "../service/callApiNguoiDung";
 
-// Async thunk để gọi API lấy danh sách người dùng theo page
-// export const fetchUserListsAdmin = createAsyncThunk(
-//   "userAdmin/fetchUsers",
-//   async (currentPage, { rejectWithValue }) => {
-//     try {
-//       const response = await callApiNguoiDung.getUserListsAdmin(currentPage);
-//       return response.data;
-//     } catch (error) {
-//       // Kiểm tra lỗi từ server
-//       if (error.response && error.response.data) {
-//         return rejectWithValue(error.response.data);
-//       } else {
-//         return rejectWithValue(error.message);
-//       }
-//     }
-//   }
-// );
-
 // Async thunk để gọi API lấy tât cả danh sách người dùng
 export const fetchUserListsAll = createAsyncThunk(
   "userAdmin/fetchUsersAll",
