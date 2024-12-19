@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../student/courses/course-detail/DetailPage.module.scss";
 import { Button, Col, Form, Input, message, Modal, Row } from "antd";
 import avtHocVien from "../student/homepage/asset/listDangVienHangDau/avtHocVien.jpg";
-import { callApiNguoiDung } from "../../service/callApiNguoiDung";
+import { callApiNguoiDung } from "../../service/callApiNguoiDung.js";
 
 export default function PersonalInfo() {
   const [activeTab, setActiveTab] = useState("personalInfo");
@@ -15,10 +15,9 @@ export default function PersonalInfo() {
 
     if (userLogin) {
       const storedUser = JSON.parse(userLogin);
-      // Nếu dữ liệu trong localStorage có trường soDT, đổi thành soDt
       if (storedUser.soDT) {
-        storedUser.soDt = storedUser.soDT; // Chuyển đổi
-        delete storedUser.soDT; // Xóa trường cũ
+        storedUser.soDt = storedUser.soDT;
+        delete storedUser.soDT;
       }
       setInfoStudent(storedUser);
       console.log("🚀 ~ useEffect ~ storedUser:", storedUser);
@@ -26,39 +25,55 @@ export default function PersonalInfo() {
       callApiNguoiDung
         .thongTinTaiKhoan()
         .then((result) => {
+          if (!result || !result.data) {
+            throw new Error("Dữ liệu không hợp lệ!");
+          }
           console.log("dataThongTin", result.data);
-          // Đảm bảo dữ liệu trả về từ API có soDt
           setInfoStudent(result.data);
           localStorage.setItem("USER_LOGIN", JSON.stringify(result.data));
         })
         .catch((err) => {
-          console.error("Lỗi khi lấy thông tin tài khoản:", err);
+          message.error("Không thể tải thông tin tài khoản!");
+          console.error("Lỗi khi gọi API:", err);
         });
     }
   }, []);
 
-  // Phần cập NHẬT
   const handleUpdateInfo = (values) => {
+    // Lấy dữ liệu hiện tại từ state hoặc localStorage
+    const currentUserData =
+      JSON.parse(localStorage.getItem("USER_LOGIN")) || {};
+
+    // Chỉ cập nhật các thông tin được thay đổi
     const updatedData = {
-      ...values,
-      maNhom: infoStudent.maNhom,
-      maLoaiNguoiDung: infoStudent.maLoaiNguoiDung,
-      taiKhoan: infoStudent.taiKhoan,
+      ...currentUserData, // Giữ nguyên dữ liệu hiện tại
+      ...values, // Ghi đè thông tin mới từ form
+      maNhom: currentUserData.maNhom, // Đảm bảo giữ mã nhóm
+      maLoaiNguoiDung: currentUserData.maLoaiNguoiDung, // Loại người dùng
+      taiKhoan: currentUserData.taiKhoan, // Tài khoản
     };
 
     // Nếu mật khẩu không được nhập thì loại bỏ nó
-    if (!values.matKhau) delete updatedData.matKhau;
-    console.log("Dữ liệu gửi lên API:", updatedData); // Kiểm tra dữ liệu
+    if (!values.matKhau) {
+      message.warning(
+        "Mật khẩu hiện tại không được nhập, sẽ sử dụng mật khẩu cũ."
+      );
+      delete updatedData.matKhau;
+    }
+
+    console.log("Dữ liệu gửi lên API:", updatedData);
+
     // Gọi API cập nhật
     callApiNguoiDung
       .capNhatThongTinNguoiDung(updatedData)
       .then((result) => {
         message.success("Cập nhật thông tin thành công!");
 
-        // Cập nhật state và local storage
-        console.log("Dữ liệu sau khi cập nhật:", result.data);
-        localStorage.setItem("USER_LOGIN", JSON.stringify(result.data));
-        setInfoStudent(result.data);
+        // Cập nhật lại state và localStorage nhưng giữ nguyên accessToken
+        const updatedUserData = { ...currentUserData, ...result.data };
+        localStorage.setItem("USER_LOGIN", JSON.stringify(updatedUserData));
+        setInfoStudent(updatedUserData);
+
         // Reset form và đóng modal
         form.resetFields();
         setIsModalOpen(false);
@@ -71,69 +86,58 @@ export default function PersonalInfo() {
       });
   };
 
-  const personalInfoContent = () => {
-    return (
-      <div className="p-4">
-        <Row>
-          <Col span={12}>
-            <div>
-              <p>
-                <strong>Họ và tên:</strong> {infoStudent.hoTen}
-              </p>
-              <p>
-                <strong>Email:</strong> {infoStudent.email}
-              </p>
-              <p>
-                <strong>Số điện thoại:</strong> {infoStudent.soDt}
-              </p>
-            </div>
-          </Col>
-          <Col span={12}>
-            <div>
-              <p>
-                <strong>Tài Khoản:</strong> {infoStudent.taiKhoan}
-              </p>
-              <p>
-                <strong>Nhóm:</strong> {infoStudent.maNhom}
-              </p>
-              <p>
-                <strong>Đối Tượng:</strong>{" "}
-                {infoStudent.maLoaiNguoiDung === "HV"
-                  ? "Học Viên"
-                  : infoStudent.maLoaiNguoiDung === "GV"
-                  ? "Giáo Viên"
-                  : null}
-              </p>
-            </div>
-            <div>
-              <Button
-                style={{ backgroundColor: "#f6ba35", color: "#fff" }}
-                onClick={() => {
-                  setIsModalOpen(true);
-                  form.setFieldsValue({
-                    hoTen: infoStudent.hoTen,
-                    email: infoStudent.email,
-                    matKhau: "", // Đặt lại password cho user nhập mới
-                    soDT: infoStudent.soDt,
-                  });
-                }}
-              >
-                CẬP NHẬT
-              </Button>
-            </div>
-          </Col>
-        </Row>
-      </div>
-    );
-  };
+  const personalInfoContent = () => (
+    <div className="p-4">
+      <Row>
+        <Col span={12}>
+          <div>
+            <p>
+              <strong>Họ và tên:</strong> {infoStudent.hoTen}
+            </p>
+            <p>
+              <strong>Email:</strong> {infoStudent.email}
+            </p>
+            <p>
+              <strong>Số điện thoại:</strong> {infoStudent.soDt}
+            </p>
+          </div>
+        </Col>
+        <Col span={12}>
+          <div>
+            <p>
+              <strong>Tài Khoản:</strong> {infoStudent.taiKhoan}
+            </p>
+            <p>
+              <strong>Nhóm:</strong> {infoStudent.maNhom}
+            </p>
+            <p>
+              <strong>Đối Tượng:</strong>{" "}
+              {infoStudent.maLoaiNguoiDung === "HV" ? "Học Viên" : "Giáo Viên"}
+            </p>
+          </div>
+          <Button
+            style={{ backgroundColor: "#f6ba35", color: "#fff" }}
+            onClick={() => {
+              setIsModalOpen(true);
+              form.setFieldsValue({
+                hoTen: infoStudent.hoTen,
+                email: infoStudent.email,
+                matKhau: "",
+                soDT: infoStudent.soDt,
+              });
+            }}
+          >
+            CẬP NHẬT
+          </Button>
+        </Col>
+      </Row>
+    </div>
+  );
 
-  // Nội dung tab khóa học
   const coursesContent = (
     <div className="p-4">
       <h3 className="text-xl font-bold mb-2">Khóa học</h3>
-      {/* Kiểm tra nếu chiTietKhoaHocGhiDanh có dữ liệu */}
-      {infoStudent?.chiTietKhoaHocGhiDanh &&
-      infoStudent.chiTietKhoaHocGhiDanh.length > 0 ? (
+      {infoStudent?.chiTietKhoaHocGhiDanh?.length > 0 ? (
         <ul className="list-disc ml-5">
           {infoStudent.chiTietKhoaHocGhiDanh.map((course) => (
             <li key={course.maKhoaHoc}>
@@ -142,11 +146,10 @@ export default function PersonalInfo() {
           ))}
         </ul>
       ) : (
-        <p>Không có khóa học nào.</p> // Thông báo nếu không có khóa học
+        <p>Không có khóa học nào.</p>
       )}
     </div>
   );
-  console.log("🚀 ~ PersonalInfo ~ infoStudent:", infoStudent);
 
   return (
     <div>
@@ -158,7 +161,6 @@ export default function PersonalInfo() {
           </div>
           <div className="mx-5 py-8">
             <div className="grid grid-cols-12 gap-2 h-full">
-              {/* Phần thông tin avatar */}
               <div className="col-span-3 p-4 rounded-lg shadow-lg flex flex-col justify-between">
                 <div className="flex flex-col items-center text-center">
                   <img
@@ -175,8 +177,6 @@ export default function PersonalInfo() {
                 </div>
               </div>
 
-              {/* Phần thông tin chi tiết */}
-              {/* Phần 8 */}
               <div className="col-span-9 bg-white p-4 rounded-lg shadow-lg flex flex-col">
                 <div className="flex justify-start mb-4">
                   <Button
@@ -194,10 +194,10 @@ export default function PersonalInfo() {
                   </Button>
                 </div>
 
-                {/* Nội dung hiển thị dựa trên tab */}
                 <div className="flex-1">
-                  {activeTab === "personalInfo" && personalInfoContent()}
-                  {activeTab === "courses" && coursesContent}
+                  {activeTab === "personalInfo"
+                    ? personalInfoContent()
+                    : coursesContent}
                 </div>
               </div>
             </div>
@@ -205,20 +205,15 @@ export default function PersonalInfo() {
         </div>
       </section>
 
-      {/* Modal cập nhật */}
       <Modal
         title="Cập nhật thông tin cá nhân"
         visible={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
-        onOk={() => form.submit()} // Submit form khi nhấn OK
+        onOk={() => form.submit()}
         okText="Cập nhật"
         cancelText="Hủy"
       >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleUpdateInfo} // Xử lý khi submit form
-        >
+        <Form form={form} layout="vertical" onFinish={handleUpdateInfo}>
           <Form.Item
             label="Họ và tên"
             name="hoTen"
@@ -239,7 +234,7 @@ export default function PersonalInfo() {
           <Form.Item
             label="Mật khẩu"
             name="matKhau"
-            rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
+            rules={[{ min: 6, message: "Mật khẩu phải có ít nhất 6 ký tự!" }]}
           >
             <Input.Password />
           </Form.Item>

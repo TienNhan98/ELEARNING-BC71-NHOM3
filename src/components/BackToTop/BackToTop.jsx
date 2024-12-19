@@ -35,7 +35,7 @@ const BackToTop = () => {
       {isVisible && (
         <div
           onClick={scrollToTop}
-          className="fixed bottom-4 right-4 bg-pink-600 text-white p-2 rounded-full shadow-lg cursor-pointer hover:bg-pink-800 transition-all"
+          className="fixed bottom-4 right-4 bg-pink-600 text-white p-3 rounded-full shadow-lg cursor-pointer hover:bg-pink-800 transition-all"
           style={{
             zIndex: 1000,
           }}
