@@ -3,14 +3,15 @@ import userSlice from "./userSlice";
 import courseSlice from "./courseSlice";
 import spinnerSlice from "./spinnerSlice";
 import userAdminSlice from "./userAdminSlice";
+import courseAdminSlice from "./courseAdminSlice";
 
 const store = configureStore({
   reducer: {
-    // gọi ra các slice
-    userSlice: userSlice,
-    courseSlice: courseSlice,
-    spinnerSlice: spinnerSlice,
-    userAdminSlice: userAdminSlice,
+    userSlice,
+    courseSlice,
+    spinnerSlice,
+    userAdminSlice,
+    courseAdminSlice,
   },
 });
 

@@ -1,11 +1,23 @@
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AdminGuard = ({ children }) => {
-  const isLoggedIn = !!localStorage.getItem("token");
-  const isAdmin = JSON.parse(localStorage.getItem("user"))?.role === "admin"; // Kiểm tra vai trò người dùng
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem("USER_LOGIN");
+  if (!isLoggedIn) return false;
 
-  if (!isLoggedIn || !isAdmin) {
-    return <Navigate to="/" replace />; // Chuyển hướng về trang chính nếu không phải admin
+  const userInfo = JSON.parse(localStorage.getItem("USER_LOGIN"));
+  const isTeacher = userInfo?.maLoaiNguoiDung === "GV"; // Kiểm tra vai trò người dùng
+
+  if (!isLoggedIn || !isTeacher) {
+    navigate("/", { replace: true });
+    Swal.fire({
+      title: "Bạn không có quyền truy cập vào trang admin.",
+      text: "Kiểm tra lại tài khoản nhé",
+      icon: "error",
+      confirmButtonText: "Đồng ý",
+    });
+    // return <Navigate to="/" replace />; // Chuyển hướng về trang chính nếu không phải admin
   }
 
   return children; // Render nội dung nếu là admin

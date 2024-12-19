@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -7,41 +7,38 @@ import { callApiNguoiDung } from "../../../service/callApiNguoiDung";
 import { useDispatch } from "react-redux";
 import { fetchUserListsAll } from "../../../redux/userAdminSlice";
 
-const AddUserModal = ({ isOpen, closeModal }) => {
+const UpdateUserModal = ({ user, isOpen, closeModal }) => {
   const dispatch = useDispatch();
-  // Hàm submit add user
-  const handleSubmitAddUser = async (values) => {
-    // Log dữ liệu form khi submit
-    console.log("form thêm người dùng", values);
-
+  // Hàm submit update user
+  const handleUpdateUser = async (values) => {
     try {
-      const result = await callApiNguoiDung.createUserAdmin(values);
+      // Gửi yêu cầu API cập nhật người dùng
+      const response = await callApiNguoiDung.updateUser(values);
 
-      if (result.status === 200) {
-        formikCreateUser.resetForm();
-
+      if (response.status === 200) {
         Swal.fire({
-          title: "Thêm người thành công!",
+          title: "Thành công!",
+          text: "Người dùng đã được cập nhật thành công.",
           icon: "success",
           timer: 2000,
           showConfirmButton: false,
         });
-
-        // Dispatch lại action để lấy lại danh sách người dùng
+        closeModal();
         dispatch(fetchUserListsAll());
       }
     } catch (error) {
       Swal.fire({
-        title: error.response?.data,
-        text: "Vui lòng thử lại.",
+        title: "Lỗi!",
+        text:
+          error.response?.data ||
+          "Có lỗi xảy ra khi cập nhật người dùng. Vui lòng thử lại.",
         icon: "error",
-        timer: 2000,
-        showConfirmButton: false,
+        confirmButtonText: "Đóng",
       });
     }
   };
 
-  const formikCreateUser = useFormik({
+  const formikUpdateUser = useFormik({
     initialValues: {
       taiKhoan: "",
       matKhau: "",
@@ -68,8 +65,22 @@ const AddUserModal = ({ isOpen, closeModal }) => {
         ),
       maLoaiNguoiDung: Yup.string().required("Vui lòng chọn người dùng !"),
     }),
-    onSubmit: handleSubmitAddUser,
+    onSubmit: handleUpdateUser,
   });
+
+  useEffect(() => {
+    if (user) {
+      formikUpdateUser.setValues({
+        taiKhoan: user.taiKhoan || "",
+        matKhau: user.matKhau || "",
+        hoTen: user.hoTen || "",
+        soDt: user.soDt || "",
+        maLoaiNguoiDung: user.maLoaiNguoiDung || "",
+        email: user.email || "",
+        maNhom: user.maNhom || "GP01",
+      });
+    }
+  }, [user]);
 
   if (!isOpen) return null; // Nếu modal không mở thì không render
 
@@ -82,9 +93,11 @@ const AddUserModal = ({ isOpen, closeModal }) => {
         onClick={(e) => e.stopPropagation()}
         className="bg-white rounded-lg shadow-lg w-full sm:w-96 md:w-1/2 lg:w-1/3 p-6"
       >
-        <h2 className="text-2xl font-semibold text-center">Thêm người dùng</h2>
+        <h2 className="text-2xl font-semibold text-center">
+          CẬP NHẬT THÔNG TIN
+        </h2>
 
-        <form onSubmit={formikCreateUser.handleSubmit}>
+        <form onSubmit={formikUpdateUser.handleSubmit}>
           <div className="form-group mb-4">
             <div className="input-group  ">
               {/* Icon và input nằm cùng 1 hàng */}
@@ -94,19 +107,19 @@ const AddUserModal = ({ isOpen, closeModal }) => {
                 </span>
               </div>
               <input
-                value={formikCreateUser.values.taiKhoan}
+                value={formikUpdateUser.values.taiKhoan}
                 name="taiKhoan"
                 id="tknv"
                 className="form-control input-sm "
                 placeholder="Tài khoản"
-                onChange={formikCreateUser.handleChange}
-                onBlur={formikCreateUser.handleBlur}
+                onChange={formikUpdateUser.handleChange}
+                onBlur={formikUpdateUser.handleBlur}
               />
             </div>
-            {formikCreateUser.touched.taiKhoan &&
-              formikCreateUser.errors.taiKhoan && (
+            {formikUpdateUser.touched.taiKhoan &&
+              formikUpdateUser.errors.taiKhoan && (
                 <div className="text-danger text-left text-red-600">
-                  {formikCreateUser.errors.taiKhoan}
+                  {formikUpdateUser.errors.taiKhoan}
                 </div>
               )}
           </div>
@@ -121,9 +134,9 @@ const AddUserModal = ({ isOpen, closeModal }) => {
                 </span>
               </div>
               <input
-                value={formikCreateUser.values.hoTen}
-                onChange={formikCreateUser.handleChange}
-                onBlur={formikCreateUser.handleBlur}
+                value={formikUpdateUser.values.hoTen}
+                onChange={formikUpdateUser.handleChange}
+                onBlur={formikUpdateUser.handleBlur}
                 type="text"
                 name="hoTen"
                 id="hoTen"
@@ -131,10 +144,10 @@ const AddUserModal = ({ isOpen, closeModal }) => {
                 placeholder="Họ và tên"
               />
             </div>
-            {formikCreateUser.touched.hoTen &&
-              formikCreateUser.errors.hoTen && (
+            {formikUpdateUser.touched.hoTen &&
+              formikUpdateUser.errors.hoTen && (
                 <div className="text-danger text-left text-red-600">
-                  {formikCreateUser.errors.hoTen}
+                  {formikUpdateUser.errors.hoTen}
                 </div>
               )}
           </div>
@@ -147,9 +160,9 @@ const AddUserModal = ({ isOpen, closeModal }) => {
                 </span>
               </div>
               <input
-                value={formikCreateUser.values.email}
-                onChange={formikCreateUser.handleChange}
-                onBlur={formikCreateUser.handleBlur}
+                value={formikUpdateUser.values.email}
+                onChange={formikUpdateUser.handleChange}
+                onBlur={formikUpdateUser.handleBlur}
                 type="email"
                 name="email"
                 id="email"
@@ -157,10 +170,10 @@ const AddUserModal = ({ isOpen, closeModal }) => {
                 placeholder="Email"
               />
             </div>
-            {formikCreateUser.touched.email &&
-              formikCreateUser.errors.email && (
+            {formikUpdateUser.touched.email &&
+              formikUpdateUser.errors.email && (
                 <div className="text-danger text-left text-red-600">
-                  {formikCreateUser.errors.email}
+                  {formikUpdateUser.errors.email}
                 </div>
               )}
           </div>
@@ -173,9 +186,9 @@ const AddUserModal = ({ isOpen, closeModal }) => {
                 </span>
               </div>
               <input
-                value={formikCreateUser.values.matKhau}
-                onChange={formikCreateUser.handleChange}
-                onBlur={formikCreateUser.handleBlur}
+                value={formikUpdateUser.values.matKhau}
+                onChange={formikUpdateUser.handleChange}
+                onBlur={formikUpdateUser.handleBlur}
                 type="password"
                 name="matKhau"
                 id="matKhau"
@@ -183,10 +196,10 @@ const AddUserModal = ({ isOpen, closeModal }) => {
                 placeholder="Mật khẩu"
               />
             </div>
-            {formikCreateUser.touched.matKhau &&
-              formikCreateUser.errors.matKhau && (
+            {formikUpdateUser.touched.matKhau &&
+              formikUpdateUser.errors.matKhau && (
                 <div className="text-danger text-left text-red-600">
-                  {formikCreateUser.errors.matKhau}
+                  {formikUpdateUser.errors.matKhau}
                 </div>
               )}
           </div>
@@ -199,9 +212,9 @@ const AddUserModal = ({ isOpen, closeModal }) => {
                 </span>
               </div>
               <input
-                value={formikCreateUser.values.soDt}
-                onChange={formikCreateUser.handleChange}
-                onBlur={formikCreateUser.handleBlur}
+                value={formikUpdateUser.values.soDt}
+                onChange={formikUpdateUser.handleChange}
+                onBlur={formikUpdateUser.handleBlur}
                 type="text"
                 name="soDt"
                 id="soDt"
@@ -209,9 +222,9 @@ const AddUserModal = ({ isOpen, closeModal }) => {
                 placeholder="Số điện thoại"
               />
             </div>
-            {formikCreateUser.touched.soDt && formikCreateUser.errors.soDt && (
+            {formikUpdateUser.touched.soDt && formikUpdateUser.errors.soDt && (
               <div className="text-danger text-left text-red-600">
-                {formikCreateUser.errors.soDt}
+                {formikUpdateUser.errors.soDt}
               </div>
             )}
           </div>
@@ -224,9 +237,9 @@ const AddUserModal = ({ isOpen, closeModal }) => {
                 </span>
               </div>
               <select
-                value={formikCreateUser.values.maLoaiNguoiDung}
-                onChange={formikCreateUser.handleChange}
-                onBlur={formikCreateUser.handleBlur}
+                value={formikUpdateUser.values.maLoaiNguoiDung}
+                onChange={formikUpdateUser.handleChange}
+                onBlur={formikUpdateUser.handleBlur}
                 className="form-control input-sm"
                 id="maLoaiNguoiDung"
                 name="maLoaiNguoiDung"
@@ -236,10 +249,10 @@ const AddUserModal = ({ isOpen, closeModal }) => {
                 <option value="HV">Học viên</option>
               </select>
             </div>
-            {formikCreateUser.touched.maLoaiNguoiDung &&
-              formikCreateUser.errors.maLoaiNguoiDung && (
+            {formikUpdateUser.touched.maLoaiNguoiDung &&
+              formikUpdateUser.errors.maLoaiNguoiDung && (
                 <div className="text-danger text-left text-red-600">
-                  {formikCreateUser.errors.maLoaiNguoiDung}
+                  {formikUpdateUser.errors.maLoaiNguoiDung}
                 </div>
               )}
           </div>
@@ -250,7 +263,7 @@ const AddUserModal = ({ isOpen, closeModal }) => {
               type="submit"
               className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              Thêm người dùng
+              Cập nhật
             </button>
             <button
               type="button"
@@ -266,4 +279,4 @@ const AddUserModal = ({ isOpen, closeModal }) => {
   );
 };
 
-export default AddUserModal;
+export default UpdateUserModal;

@@ -1,33 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { callApiKhoaHoc } from "../service/callApiKhoaHoc";
 
-// Thunk  để lấy danh sách tất cả các khóa học
-// export const fetchAllCourses = createAsyncThunk(
-//   "'courses/fetchAllCourses",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const response = await http.get(
-//         "/api/QuanLyKhoaHoc/LayDanhSachKhoaHoc?MaNhom=GP01"
-//       );
-//       return response.data;
-//     } catch (error) {
-//       if (error.response && error.response.data) {
-//         return rejectWithValue(error.response.data);
-//       }
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
-
 // Thunk để lấy danh sách khóa học phân trang
 export const fetchCoursesPagination = createAsyncThunk(
-  "'courses/fetchCoursesPagination",
+  "courses/fetchCoursesPagination",
   async (currentPage) => {
     try {
       const response = await callApiKhoaHoc.getListCoursePagination(
         currentPage
       );
-      console.log("🚀 ~ response:", response.data);
 
       return response.data;
     } catch (error) {
@@ -37,11 +18,30 @@ export const fetchCoursesPagination = createAsyncThunk(
   }
 );
 
+//  call api lấy danh mục khóa học
+export const fetchCategoryCourses = createAsyncThunk(
+  "courses/fetchCategoryCourses",
+  async (_, { rejectWithValue }) => {
+    console.log("fetchCategoryCourses");
+    try {
+      const response = await callApiKhoaHoc.layDanhMucKhoaHoc();
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const courseSlice = createSlice({
   name: "courseSlice",
   initialState: {
     coursesPagination: [],
     allCourses: [],
+    categories: [],
     currentPage: 1,
     pageSize: 12,
     totalPages: 0,
@@ -50,27 +50,19 @@ const courseSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchCoursesPagination.fulfilled, (state, action) => {
-        state.coursesPagination = action.payload.items; // Điều chỉnh tùy theo cấu trúc dữ liệu API
-        state.totalPages = action.payload.totalPages; //
+        state.coursesPagination = action.payload.items;
+        state.totalPages = action.payload.totalPages;
       })
       .addCase(fetchCoursesPagination.rejected, (state, action) => {
         state.coursesPagination = [];
+      })
+
+      .addCase(fetchCategoryCourses.fulfilled, (state, action) => {
+        state.categories = action.payload || [];
+      })
+      .addCase(fetchCategoryCourses.rejected, (state) => {
+        state.categories = [];
       });
-    // Xử lý các trạng thái cho fetchAllCourses
-    //   .addCase(fetchAllCourses.pending, (state) => {
-    //     state.loading = true;
-    //     state.error = "";
-    //   })
-    //   .addCase(fetchAllCourses.fulfilled, (state, action) => {
-    //     state.loading = false;
-    //     state.allCourses = action.payload; // Điều chỉnh tùy theo cấu trúc dữ liệu API
-    //     state.error = "";
-    //   })
-    //   .addCase(fetchAllCourses.rejected, (state, action) => {
-    //     state.loading = false;
-    //     state.allCourses = [];
-    //     state.error = action.payload || "Something went wrong";
-    //   });
   },
 });
 

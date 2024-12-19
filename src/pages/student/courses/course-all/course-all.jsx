@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-import { useState } from "react";
 import styles from "./course-all.module.scss";
 
 import { NavLink, useNavigate } from "react-router-dom";

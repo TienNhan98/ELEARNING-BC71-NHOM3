@@ -3,31 +3,39 @@ import React, { useEffect, useState } from "react";
 import { Settings } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
-import { fetchUserListsAdmin } from "../../../redux/userAdminSlice";
+
 import styles from "../../student/courses/course-all/course-all.module.scss";
 import AddUserModal from "./CreateUserModal";
+import { fetchUserListsAll } from "../../../redux/userAdminSlice";
+import UpdateUserModal from "./UpdateUserModal";
+import Swal from "sweetalert2";
+
+import { callApiNguoiDung } from "../../../service/callApiNguoiDung";
 
 export default function ManageUsers() {
   const dispatch = useDispatch();
+  const [modalType, setModalType] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Lấy dữ liệu từ store
-  const { userLists, status, error, totalPages } = useSelector(
-    (state) => state.userAdminSlice
-  );
+  const { userListAll } = useSelector((state) => state.userAdminSlice);
 
   // Trạng thái phân trang
   const [currentPage, setCurrentPage] = useState(1);
-  const indexOfFirstUser = (currentPage - 1) * 10;
+  const usersPerPage = 10; // Số lượng user mỗi trang
+  const startIndex = (currentPage - 1) * usersPerPage;
+  const endIndex = startIndex + usersPerPage;
+  const paginatedUsers = userListAll.slice(startIndex, endIndex);
 
   useEffect(() => {
-    console.log("Fetching users for page:", currentPage);
+    dispatch(fetchUserListsAll());
+  }, [dispatch]);
 
-    dispatch(fetchUserListsAdmin(currentPage));
-  }, [currentPage, dispatch]);
-
-  //hàm thêm user
+  //hàm thêm course
   const handleAddUser = () => {
+    setModalType("add");
+    setSelectedUser(null);
     setIsModalOpen(true);
   };
 
@@ -38,27 +46,69 @@ export default function ManageUsers() {
     // Bạn có thể mở một modal hoặc thực hiện hành động khác ở đây
   };
 
+  // hàm edit
   const handleEdit = (user) => {
-    // Mở modal chỉnh sửa và đặt dữ liệu người dùng vào state
-    // setEditUserData(user);
-    // setIsEditModalOpen(true);
+    setModalType("edit");
+    setSelectedUser(user);
+    setIsModalOpen(true);
   };
 
-  const handleDelete = (userId) => {
-    // Xử lý xóa người dùng
-    if (window.confirm("Bạn có chắc chắn muốn xóa người dùng này?")) {
-      // Dispatch một action để xóa người dùng từ Redux store
-      // dispatch(deleteUser(userId));
+  //hàm handle delete
+  const handleDelete = async (userId) => {
+    try {
+      const confirmResult = await Swal.fire({
+        title: "Bạn có chắc chắn muốn xóa người dùng này?",
+        text: "Hành động này không thể hoàn tác!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Xóa",
+        cancelButtonText: "Hủy",
+      });
+
+      if (confirmResult.isConfirmed) {
+        const response = await callApiNguoiDung.deleteUser(userId);
+
+        // Kiểm tra nếu xóa thành công
+        if (response.status === 200) {
+          Swal.fire({
+            title: "Đã xóa!",
+            text: "Người dùng đã được xóa thành công.",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+
+          // Cập nhật lại danh sách người dùng sau khi xóa
+          dispatch(fetchUserListsAll());
+        }
+      }
+    } catch (error) {
+      console.error("Lỗi khi xóa người dùng:", error.response?.data || error);
+      Swal.fire({
+        title: "Lỗi!",
+        text:
+          error.response?.data ||
+          "Có lỗi xảy ra khi xóa người dùng. Vui lòng thử lại.",
+        icon: "error",
+        confirmButtonText: "Đóng",
+      });
     }
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedUser(null);
+    setModalType(null);
+  };
   // hàm render table
   const renderUserTable = () => {
-    return userLists.length > 0 ? (
-      userLists.map((user, index) => (
+    return paginatedUsers.length > 0 ? (
+      paginatedUsers.map((user, index) => (
         <tr key={user.id} className="hover:bg-gray-100">
           <td className="border border-gray-300 p-2">
-            {indexOfFirstUser + index + 1}
+            {startIndex + index + 1}
           </td>
           <td className="border border-gray-300 p-2">{user.taiKhoan}</td>
           <td className="border border-gray-300 p-2">{user.maLoaiNguoiDung}</td>
@@ -86,7 +136,7 @@ export default function ManageUsers() {
               {/* Nút Xóa */}
               <button
                 className="p-2 bg-red-500 text-white rounded hover:bg-red-600 w-full sm:w-auto"
-                onClick={() => handleDelete(user.id)}
+                onClick={() => handleDelete(user.taiKhoan)}
               >
                 Xóa
               </button>
@@ -118,70 +168,63 @@ export default function ManageUsers() {
           Thêm người dùng
         </button>
         {/* Modal */}
-        {isModalOpen && (
-          <AddUserModal
+        {isModalOpen && modalType === "add" && (
+          <AddUserModal isOpen={isModalOpen} closeModal={closeModal} />
+        )}
+        {isModalOpen && modalType === "edit" && selectedUser && (
+          <UpdateUserModal
+            user={selectedUser}
             isOpen={isModalOpen}
-            closeModal={() => setIsModalOpen(false)} // Đóng modal
+            closeModal={closeModal}
           />
         )}
       </div>
 
-      {/* Hiển thị loading */}
-      {status === "loading" && (
-        <p className="text-gray-500">Đang tải dữ liệu...</p>
-      )}
+      <>
+        <div className="min-w-full">
+          <table className="min-w-full border-collapse border border-gray-300  text-center">
+            <thead>
+              <tr className="bg-gray-200 ">
+                <th className=" border border-gray-300 p-2">STT</th>
+                <th className="border border-gray-300 p-2 ">Tài khoản</th>
+                <th className="border border-gray-300 p-2">Người dùng</th>
+                <th className="border border-gray-300 p-2">Họ và tên</th>
+                <th className="border border-gray-300 p-2">Email</th>
+                <th className="border border-gray-300 p-2">Số điện thoại</th>
+                <th className="border border-gray-300 p-2 h-16 flex items-center justify-center ">
+                  <Settings size={20} />
+                </th>
+              </tr>
+            </thead>
 
-      {/* Hiển thị lỗi */}
-      {status === "failed" && <p className="text-red-500">{error}</p>}
+            <tbody>{renderUserTable()}</tbody>
+          </table>
+        </div>
 
-      {/* Hiển thị bảng khi dữ liệu đã được tải */}
-      {status === "succeeded" && (
-        <>
-          <div className="min-w-full">
-            <table className="min-w-full border-collapse border border-gray-300  text-center">
-              <thead>
-                <tr className="bg-gray-200 ">
-                  <th className=" border border-gray-300 p-2">STT</th>
-                  <th className="border border-gray-300 p-2 ">Tài khoản</th>
-                  <th className="border border-gray-300 p-2">Người dùng</th>
-                  <th className="border border-gray-300 p-2">Họ và tên</th>
-                  <th className="border border-gray-300 p-2">Email</th>
-                  <th className="border border-gray-300 p-2">Số điện thoại</th>
-                  <th className="border border-gray-300 p-2 h-16 flex items-center justify-center ">
-                    <Settings size={20} />
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>{renderUserTable()}</tbody>
-            </table>
-          </div>
-
-          {/* Phân trang */}
-          <div className="flex justify-center mt-10 mb-10">
-            <ReactPaginate
-              forcePage={currentPage - 1}
-              pageRangeDisplayed={3}
-              pageCount={totalPages}
-              containerClassName={styles.paginationPages}
-              pageClassName={styles.pageItem}
-              pageLinkClassName={styles.pageLinkPages}
-              nextClassName={styles.pageItem}
-              nextLinkClassName={styles.pageLinkPages}
-              previousClassName={styles.pageItem}
-              previousLinkClassName={styles.pageLinkPages}
-              breakClassName={styles.pageItem}
-              breakLinkClassName={styles.pageLinkPages}
-              activeClassName={styles.active}
-              nextLabel={<i className="bi bi-arrow-right "></i>}
-              previousLabel={<i className="bi bi-arrow-left "></i>}
-              onPageChange={({ selected }) => {
-                setCurrentPage(selected + 1);
-              }}
-            />
-          </div>
-        </>
-      )}
+        {/* Phân trang */}
+        <div className="flex justify-center mt-10 mb-10">
+          <ReactPaginate
+            forcePage={currentPage - 1}
+            pageRangeDisplayed={3}
+            pageCount={Math.ceil(userListAll.length / usersPerPage)}
+            containerClassName={styles.paginationPages}
+            pageClassName={styles.pageItem}
+            pageLinkClassName={styles.pageLinkPages}
+            nextClassName={styles.pageItem}
+            nextLinkClassName={styles.pageLinkPages}
+            previousClassName={styles.pageItem}
+            previousLinkClassName={styles.pageLinkPages}
+            breakClassName={styles.pageItem}
+            breakLinkClassName={styles.pageLinkPages}
+            activeClassName={styles.active}
+            nextLabel={<i className="bi bi-arrow-right "></i>}
+            previousLabel={<i className="bi bi-arrow-left "></i>}
+            onPageChange={({ selected }) => {
+              setCurrentPage(selected + 1);
+            }}
+          />
+        </div>
+      </>
     </div>
   );
 }

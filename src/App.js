@@ -3,7 +3,6 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import StudentLayout from "./template/layouts/student-layout";
 
-import ListCoursesByCat from "./pages/student/list-courses-by-cat/list-courses-by-cat";
 import CourseDetail from "./pages/student/courses/course-detail/course-detail";
 import AuthGuard from "./guard/auth-guard";
 import AdminGuard from "./guard/admin-guard";
@@ -47,9 +46,9 @@ export default function App() {
           <Route
             path="/admin"
             element={
-              // <AdminGuard>
-              <AdminLayout />
-              // </AdminGuard>
+              <AdminGuard>
+                <AdminLayout />
+              </AdminGuard>
             }
           >
             <Route index element={<Navigate to="quanlynguoidung" />} />

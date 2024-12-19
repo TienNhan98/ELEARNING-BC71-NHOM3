@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, NavLink, useHref, useNavigate } from "react-router-dom";
+import { useParams, NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { callApiKhoaHoc } from "../../../service/callApiKhoaHoc";
 import styles from "../courses/course-detail/DetailPage.module.scss";
@@ -32,10 +32,8 @@ export default function CatetoryCourse() {
       .catch((err) => {});
   }, [maDanhMuc]);
 
-  let nameCategory = listDanhMucKhoaHoc.find((item, index) => {
-    if (item.maDanhMuc === maDanhMuc) {
-      return item;
-    }
+  let nameCategory = listDanhMucKhoaHoc.find((item, _) => {
+    return item.maDanhMuc === maDanhMuc;
   });
 
   // hàm render khóa học

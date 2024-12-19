@@ -271,3 +271,66 @@
   width: 100%;
   font-size: 15px;
 }
+
+@media (max-width: 768px) {
+  .container {
+    width: 95vw;
+    height: auto;
+    flex-direction: column;
+    display: flex;
+  }
+
+  .formContainer {
+    width: 100%;
+    position: static; /* Không dùng absolute nữa */
+    transform: none !important; /* Reset lại animation */
+    opacity: 1 !important;
+  }
+
+  .toggleContainer {
+    display: none; /* Ẩn toggleContainer */
+  }
+
+  .container form {
+    padding: 0 20px;
+  }
+
+  .container input,
+  .container select {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .container button {
+    font-size: 12px;
+    padding: 10px 20px;
+  }
+}
+
+/* Responsive cho Mobile (dưới 480px) */
+@media (max-width: 480px) {
+  .container {
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: none; /* Loại bỏ shadow cho giao diện phẳng hơn */
+  }
+
+  .container h1 {
+    font-size: 1.2rem;
+  }
+
+  .container input,
+  .container select {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .container button {
+    padding: 8px 15px;
+    font-size: 10px;
+  }
+
+  .errorMessage {
+    font-size: 12px;
+  }
+}
