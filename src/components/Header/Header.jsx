@@ -58,66 +58,139 @@ export default function Header() {
     window.location.href = "/login";
   };
 
+  // const dropdownContent = (
+  //   <div
+  //     onClick={handleLogout}
+  //     style={{
+  //       display: "flex",
+  //       alignItems: "center",
+  //       justifyContent: "start",
+  //       width: "40px",
+  //       height: "40px",
+  //       borderRadius: "50%",
+  //       cursor: "pointer",
+  //     }}
+  //     className="animate-slide-left-to-right"
+  //   >
+  //     <PoweroffOutlined
+  //       style={{
+  //         fontSize: "24px",
+  //         color: "#f6ba35",
+  //         fontWeight: "bold",
+  //       }}
+  //     />
+  //   </div>
+  // );
   const dropdownContent = (
     <div
       onClick={handleLogout}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "start",
-        width: "40px",
-        height: "40px",
-        borderRadius: "50%",
-        cursor: "pointer",
-      }}
-      className="animate-slide-left-to-right"
+      className="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer bg-white shadow-md"
     >
-      <PoweroffOutlined
-        style={{
-          fontSize: "24px",
-          color: "#f6ba35",
-          fontWeight: "bold",
-        }}
-      />
+      <PoweroffOutlined className="text-[24px] text-[#f6ba35] font-bold" />
     </div>
   );
+  // let renderMenu = () => {
+  //   if (user) {
+  //     return (
+  //       <div className="daDangNhap">
+  //         <div
+  //           style={{
+  //             display: "flex",
+  //             justifyContent: "flex-end",
+  //             padding: "20px",
+  //           }}
+  //         >
+  //           <Dropdown
+  //             overlay={dropdownContent}
+  //             trigger={["hover"]}
+  //             placement="rightTop"
+  //             overlayStyle={{ minWidth: "auto", marginTop: "50px" }}
+  //           >
+  //             <div className="flex items-center">
+  //               {/* Biểu tượng cài đặt nếu là GV */}
+  //               {user.maLoaiNguoiDung === "GV" && (
+  //                 <span className="mr-2">
+  //                   <NavLink to="/admin">
+  //                     <i className="fas fa-cog cursor-pointer" />
+  //                   </NavLink>
+  //                 </span>
+  //               )}
 
+  //               {/* Avatar và liên kết thông tin cá nhân */}
+  //               <a
+  //                 className="_blank"
+  //                 onClick={() => {
+  //                   navigate("/thongtincanhan");
+  //                 }}
+  //               >
+  //                 <img
+  //                   className="border rounded-full object-cover opacity-90 hover:opacity-100 duration-300 transition-all w-16 h-16 cursor-pointer"
+  //                   src={avt}
+  //                   alt="Avatar"
+  //                 />
+  //               </a>
+  //             </div>
+  //           </Dropdown>
+  //         </div>
+  //       </div>
+  //     );
+  //   } else {
+  //     return (
+  //       <div className="flex justify-end items-center ml-4 chuaDangNhap">
+  //         <NavLink
+  //           to="/login"
+  //           className="btn btn-warning font-bold text-white hover:scale-105 duration-300 transition-all"
+  //         >
+  //           ĐĂNG NHẬP
+  //         </NavLink>
+  //       </div>
+  //     );
+  //   }
+  // };
   let renderMenu = () => {
     if (user) {
       return (
-        <div className="daDangNhap">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              padding: "20px",
+        <div className="flex items-center justify-end p-4">
+          <Dropdown
+            overlay={dropdownContent}
+            trigger={["hover"]}
+            placement="rightTop"
+            overlayStyle={{
+              top: "50px",
+              left: "1460px",
+              position: "absolute",
             }}
           >
-            <Dropdown
-              overlay={dropdownContent}
-              trigger={["hover"]}
-              placement="rightCenter"
-            >
+            <div className="flex items-center space-x-4 h-16">
+              {/* Biểu tượng cài đặt nếu là GV */}
+              {user.maLoaiNguoiDung === "GV" && (
+                <span className="flex items-center">
+                  <NavLink to="/admin">
+                    <i className="fas fa-cog cursor-pointer text-xl text-[#f6ba35]" />
+                  </NavLink>
+                </span>
+              )}
+
+              {/* Avatar và liên kết thông tin cá nhân */}
               <a
-                className="_blank"
+                className="flex items-center"
                 onClick={() => {
                   navigate("/thongtincanhan");
                 }}
               >
                 <img
-                  className="border rounded-circle object-fit object-cover opacity-90 hover:opacity-100 duration-300 transition-all"
-                  style={{ width: "70px", height: "70px", cursor: "pointer" }}
+                  className="border rounded-full object-cover opacity-90 hover:opacity-100 duration-300 transition-all w-16 h-16 cursor-pointer"
                   src={avt}
                   alt="Avatar"
                 />
               </a>
-            </Dropdown>
-          </div>
+            </div>
+          </Dropdown>
         </div>
       );
     } else {
       return (
-        <div className="flex justify-end items-center ml-4 chuaDangNhap">
+        <div className="flex justify-end items-center ml-4 ">
           <NavLink
             to="/login"
             className="btn btn-warning font-bold text-white hover:scale-105 duration-300 transition-all"

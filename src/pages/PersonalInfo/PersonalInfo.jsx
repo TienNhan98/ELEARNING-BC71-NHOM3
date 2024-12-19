@@ -57,7 +57,7 @@ export default function PersonalInfo() {
 
         // Cập nhật state và local storage
         console.log("Dữ liệu sau khi cập nhật:", result.data);
-        localStorage.setItem("USER_LOGIN", JSON.stringify(result.data));
+        localStorage.setItem("USER_LOGIN", JSON.stringify(result));
         setInfoStudent(result.data);
         // Reset form và đóng modal
         form.resetFields();
