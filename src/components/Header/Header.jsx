@@ -1,25 +1,60 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../../asset/logo/logo.png";
 import avt from "../../asset/avt.jpg";
-import Search from "antd/es/transfer/search";
-import { PoweroffOutlined, SearchOutlined } from "@ant-design/icons";
+import { PoweroffOutlined } from "@ant-design/icons";
 import NavBar from "./NavBar";
 import { Dropdown } from "antd";
 import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import SearchLogicComponent from "./SearchLogicComponent";
+import { normalizeString } from "../../untils/normalize"; // Thêm import hàm normalize
+import { callApiKhoaHoc } from "../../service/callApiKhoaHoc";
 
 export default function Header() {
   let user = useSelector((state) => state.userSlice.dataLogin);
   let navigate = useNavigate();
+
+  // Xử lý tìm kiếm và điều hướng
+  const handleSearch = async (value) => {
+    const normalizedValue = normalizeString(value); // Chuẩn hóa giá trị tìm kiếm
+    if (!normalizedValue || normalizedValue.length === 0) {
+      // console.error("Giá trị tìm kiếm trống!");
+      return; // Không thực hiện điều hướng nếu giá trị rỗng
+    }
+    try {
+      const response = await callApiKhoaHoc.layDanhSachKhoaHoc();
+      const allCourses = response.data;
+
+      // Lọc khóa học dựa trên tenDanhMucKhoaHoc
+      const filteredCourses = allCourses.filter((course) => {
+        const normalizedCourseName = normalizeString(
+          course.danhMucKhoaHoc.tenDanhMucKhoaHoc
+        );
+
+        return normalizedCourseName.includes(normalizedValue);
+      });
+      // Nếu không có kết quả tìm kiếm, hiển thị 6 khóa học ngẫu nhiên
+      if (filteredCourses.length === 0) {
+        // Shuffle danh sách allCourses để lấy khóa học ngẫu nhiên
+        const shuffledCourses = allCourses.sort(() => 0.5 - Math.random());
+        // Lấy 6 khóa học ngẫu nhiên
+        filteredCourses.push(...shuffledCourses.slice(0, 6));
+      }
+      // Điều hướng đến trang tìm kiếm với tham số tìm kiếm
+      navigate(`/timkiem/${normalizedValue}`, {
+        state: { results: filteredCourses },
+      });
+    } catch (error) {
+      console.error("Lỗi khi gọi API:", error);
+    }
+  };
 
   const handleClick = (e) => {
     navigate("/");
   };
 
   const handleLogout = () => {
-    //1. xóa localStorage
     localStorage.removeItem("USER_LOGIN");
-    //2. đá ra trang Login
     window.location.href = "/login";
   };
 
@@ -41,7 +76,7 @@ export default function Header() {
         style={{
           fontSize: "24px",
           color: "#f6ba35",
-          font: "bold",
+          fontWeight: "bold",
         }}
       />
     </div>
@@ -65,8 +100,9 @@ export default function Header() {
             >
               <a
                 className="_blank"
-                href="#"
-                onClick={(e) => e.preventDefault()}
+                onClick={() => {
+                  navigate("/thongtincanhan");
+                }}
               >
                 <img
                   className="border rounded-circle object-fit object-cover opacity-90 hover:opacity-100 duration-300 transition-all"
@@ -93,7 +129,6 @@ export default function Header() {
     }
   };
 
-  const onSearch = (value, _e, info) => console.log(info?.source, value);
   return (
     <div className="m-3 flex justify-center items-center">
       <a href="#" className="inline-block mr-2" onClick={handleClick}>
@@ -102,17 +137,7 @@ export default function Header() {
         </div>
       </a>
       <div className=" ml-2 flex justify-center items-center">
-        <Search
-          activeBorderColor="#52c41a"
-          hoverBorderColor="#52c41a"
-          placeholder="Tìm Kiếm"
-          suffix={<SearchOutlined />}
-          allowClear
-          onSearch={onSearch}
-          style={{
-            width: 500,
-          }}
-        />
+        <SearchLogicComponent onSearch={handleSearch} />
       </div>
       <div className="flex justify-end items-center ml-64">
         <NavBar />

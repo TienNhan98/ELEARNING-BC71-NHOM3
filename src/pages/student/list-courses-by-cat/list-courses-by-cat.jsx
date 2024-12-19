@@ -9,12 +9,11 @@ import avtPPV from "./asset/avaPPV.png";
 export default function ListCoursesByCat() {
   let navigate = useNavigate();
   const [listKhoaHoc, setListKhoaHoc] = useState([]);
-  // console.log("🚀 ~ ListCoursesByCat ~ listKhoaHoc:", listKhoaHoc);
+
   useEffect(() => {
     callApiKhoaHoc
       .layDanhSachKhoaHoc()
       .then((result) => {
-        // console.log(result.data);
         setListKhoaHoc(result.data);
       })
       .catch((err) => {});
@@ -27,7 +26,7 @@ export default function ListCoursesByCat() {
   return (
     <div>
       {/* topKhoaHocPhoBien */}
-      <a href="#" className="no-underline inline-block ml-5 mt-3">
+      <h6 className="no-underline inline-block ml-5 mt-3">
         <p
           className="font-bold"
           style={{
@@ -36,7 +35,7 @@ export default function ListCoursesByCat() {
         >
           Khóa học phổ biến
         </p>
-      </a>
+      </h6>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
         {topKhoaHocPhoBien.map((item) => {
           const popoVerKhoaHocPhoBien = (
@@ -196,7 +195,7 @@ export default function ListCoursesByCat() {
       </div>
 
       {/* khoaHocThamKhao */}
-      <a href="#" className="no-underline inline-block ml-5 mt-3">
+      <h6 className="no-underline inline-block ml-5 mt-3">
         <p
           className="font-bold"
           style={{
@@ -205,7 +204,7 @@ export default function ListCoursesByCat() {
         >
           Khóa học tham khảo
         </p>
-      </a>
+      </h6>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
         {khoaHocThamKhao.map((item) => {
           const popoVerKhoaHocThamKhao = (
@@ -392,7 +391,7 @@ export default function ListCoursesByCat() {
       </div>
 
       {/* cacKhoaHoc */}
-      <a href="#" className="no-underline inline-block ml-5 mt-3">
+      <h6 className="no-underline inline-block ml-5 mt-3">
         <p
           className="font-bold"
           style={{
@@ -401,7 +400,7 @@ export default function ListCoursesByCat() {
         >
           Khóa học khác
         </p>
-      </a>
+      </h6>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
         {cacKhoaHoc.map((item) => {
           const popoVerCacKhoaHoc = (
