@@ -39,4 +39,6 @@ export const callApiKhoaHoc = {
 
   deleteCourse: (coueseId) =>
     http.delete(`/api/QuanLyKhoaHoc/XoaKhoaHoc?MaKhoaHoc=${coueseId}`),
+  searchCourse: (key) =>
+    http.get(`/api/QuanLyKhoaHoc/LayDanhSachKhoaHoc?tenKhoaHoc=${key}`),
 };

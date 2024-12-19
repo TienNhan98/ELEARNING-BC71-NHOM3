@@ -5,16 +5,21 @@ import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import styles from "../../student/courses/course-all/course-all.module.scss";
 import AddCourseModal from "./CreateCourseModal";
-import { fetchCourseListAdmin } from "../../../redux/courseAdminSlice";
+import {
+  fetchCourseListAdmin,
+  fetchSearchCourses,
+} from "../../../redux/courseAdminSlice";
 import UpdateCourse from "./updateCourse";
 import Swal from "sweetalert2";
 import { callApiKhoaHoc } from "../../../service/callApiKhoaHoc";
+import { fetchUserListsAll } from "../../../redux/userAdminSlice";
 
 export default function ManageCourse() {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState(null);
   const [updateCourse, setUpdateCourse] = useState(null);
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   // Lấy dữ liệu từ store
   const { courseLists } = useSelector((state) => state.courseAdminSlice);
@@ -161,17 +166,41 @@ export default function ManageCourse() {
     setUpdateCourse(null);
   };
 
+  // Cập nhật khóa học khi tìm kiếm
+  const handleSearchChange = async (event) => {
+    const keyword = event.target.value;
+    setSearchKeyword(keyword);
+
+    // Dispatch action để tìm kiếm
+    if (keyword.trim()) {
+      dispatch(fetchSearchCourses(keyword.trim()));
+    } else {
+      // Nếu từ khóa rỗng, lấy lại toàn bộ danh sách người dùng
+      dispatch(fetchUserListsAll());
+    }
+  };
+
   return (
     <div className="p-4 bg-white rounded-lg shadow overflow-x-auto">
       <h2 className="text-2xl font-semibold mb-4">Quản lý khóa học</h2>
       {/* Nút thêm người dùng */}
-      <div className="flex justify-start mb-4">
+      <div className="flex justify-between items-center mb-4">
         <button
           className="p-2 bg-green-500 text-white rounded hover:bg-green-600 w-full sm:w-auto"
           onClick={handleAddCourse} // Thêm hàm xử lý khi nhấn nút
         >
           Thêm khóa học
         </button>
+
+        {/* Thanh tìm kiếm */}
+        <input
+          type="text"
+          placeholder="Nhập vào khóa học cần tìm"
+          value={searchKeyword}
+          onChange={handleSearchChange}
+          className="border p-2 rounded w-1/3"
+        />
+
         {/* Modal */}
         {isModalOpen && modalType === "add" && (
           <AddCourseModal isOpen={isModalOpen} closeModal={closeModal} />

@@ -28,4 +28,6 @@ export let callApiNguoiDung = {
 
   deleteUser: (userId) =>
     http.delete(`/api/QuanLyNguoiDung/XoaNguoiDung?TaiKhoan=${userId}`),
+  searchUsers: (key) =>
+    http.get(`/api/QuanLyNguoiDung/TimKiemNguoiDung?tuKhoa=${key}`),
 };
