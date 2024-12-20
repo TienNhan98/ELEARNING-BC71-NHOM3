@@ -9,10 +9,11 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import UpdateUserModal from "../../pages/admin/users/UpdateUserModal.js";
 
-const Sidebar = ({ isOpen, toggleSidebar, onLogout }) => {
+const Sidebar = ({ isOpen, toggleSidebar, onLogout, handleEdit }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
+  const user = JSON.parse(localStorage.getItem("USER_LOGIN"));
   const toggleSettings = () => {
     setIsSettingsOpen(!isSettingsOpen);
   };
@@ -23,7 +24,11 @@ const Sidebar = ({ isOpen, toggleSidebar, onLogout }) => {
   ];
 
   const settingsItems = [
-    { icon: <UserCog />, label: "Cập nhật thông tin", path: "/profile" },
+    {
+      icon: <UserCog />,
+      label: "Cập nhật thông tin",
+      onClick: () => handleEdit(user),
+    },
     { icon: <LogOut />, label: "Đăng xuất", onClick: onLogout },
   ];
 
@@ -104,6 +109,9 @@ const SidebarAdmin = () => {
   // Quản lý trạng thái sidebar tại đây
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -114,6 +122,19 @@ const SidebarAdmin = () => {
     //2. đá ra trang Login
     window.location.href = "/";
   };
+  // hàm edit
+  const handleEdit = (user) => {
+    if (!user) {
+      console.error("Người dùng không tồn tại!");
+      return;
+    }
+    setSelectedUser(user);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedUser(null);
+  };
 
   return (
     <div className="flex h-screen">
@@ -122,6 +143,7 @@ const SidebarAdmin = () => {
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
         onLogout={handleLogout}
+        handleEdit={handleEdit}
       />
 
       {/* Nội dung chính */}
@@ -138,6 +160,12 @@ const SidebarAdmin = () => {
           </button>
         </div>
       </main>
+      {/* Modal */}
+      <UpdateUserModal
+        user={selectedUser}
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+      />
     </div>
   );
 };

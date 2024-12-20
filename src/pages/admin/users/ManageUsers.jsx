@@ -52,6 +52,8 @@ export default function ManageUsers() {
 
   // hàm edit
   const handleEdit = (user) => {
+    console.log("user", user);
+
     setModalType("edit");
     setSelectedUser(user);
     setIsModalOpen(true);

@@ -19,7 +19,6 @@ export default function CourseDetail() {
     callApiKhoaHoc
       .layDanhSachKhoaHoc()
       .then((result) => {
-        // console.log(result.data);
         setListKhoaHoc(result.data);
       })
       .catch((err) => {});
@@ -35,9 +34,7 @@ export default function CourseDetail() {
         maKhoaHoc: maKhoaHoc,
       };
 
-      console.log("🚀 ~ btnRegisterCourse ~ taiKhoan:", infoRegisrer);
-
-      registerCourse(infoRegisrer); // Gọi API đăng ký khóa học
+      registerCourse(infoRegisrer);
     } else {
       navigate("/login");
     }
@@ -59,7 +56,7 @@ export default function CourseDetail() {
       });
     } catch (errors) {
       // Xử lý lỗi khi gọi API
-      console.error("Đăng ký khóa học thất bại:", errors);
+
       Swal.fire({
         title: errors.response?.data,
         icon: "warning",
@@ -74,7 +71,6 @@ export default function CourseDetail() {
     callApiKhoaHoc
       .layChiTietKhoaHoc(maKhoaHoc)
       .then((result) => {
-        console.log("🚀 ~ .then ~ result:", result.data);
         setCourseDetail(result.data);
       })
       .catch((err) => {});
