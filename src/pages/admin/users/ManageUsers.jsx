@@ -74,7 +74,12 @@ export default function ManageUsers() {
       });
 
       if (confirmResult.isConfirmed) {
+        // console.log(
+        //   JSON.parse(localStorage.getItem("USER_LOGIN"))?.accessToken
+        // );
+
         const response = await callApiNguoiDung.deleteUser(userId);
+        console.log("userId", userId);
 
         // Kiểm tra nếu xóa thành công
         if (response.status === 200) {

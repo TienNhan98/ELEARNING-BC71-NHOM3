@@ -5,10 +5,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { loginActionService } from "../../redux/userSlice";
 import { userService } from "../../service/userService";
 import Swal from "sweetalert2";
+import http from "../../service/config";
 
 export default function FormLogin() {
   let dispatch = useDispatch();
@@ -48,18 +49,16 @@ export default function FormLogin() {
       .then((result) => {
         let dataJson = JSON.stringify(result);
         localStorage.setItem("USER_LOGIN", dataJson);
-        // localStorage.setItem("token", result?.accesstoken);
 
         if (result.maLoaiNguoiDung == "GV") {
           navigate("/admin");
         } else {
           navigate(-1); // không gây reload trang
         }
+
         console.log("🚀 ~ result:", result);
       })
       .catch((err) => {
-        console.log("sdg", err);
-
         Swal.fire({
           title: "Tài khoản hoặc mật khẩu không đúng",
           text: "Vui lòng thử lại",

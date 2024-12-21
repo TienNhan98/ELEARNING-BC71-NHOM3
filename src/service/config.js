@@ -1,19 +1,18 @@
 import axios from "axios";
 import { turnOffLoading, turnOnLoading } from "../redux/spinnerSlice";
 import { getDispatch } from "../redux/dispatchService";
-import { message } from "antd";
+
 export let http = axios.create({
   baseURL: "https://elearningnew.cybersoft.edu.vn",
   headers: {
     TokenCybersoft:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA3MSIsIkhldEhhblN0cmluZyI6IjA0LzA0LzIwMjUiLCJIZXRIYW5UaW1lIjoiMTc0MzcyNDgwMDAwMCIsIm5iZiI6MTcxNDA2NDQwMCwiZXhwIjoxNzQzODcyNDAwfQ.mCs_Uc9yOttTBIcqgCCUbpVNO-U3VhT9Azo8o6CD--E",
-    Authorization: `Bearer ${
-      JSON.parse(localStorage.getItem("USER_LOGIN"))?.accessToken
-    }`,
+    // Authorization: `Bearer ${
+    //   JSON.parse(localStorage.getItem("USER_LOGIN"))?.accessToken
+    // }`,
   },
 });
 
-// axios.get()
 // Add a request interceptor
 http.interceptors.request.use(
   function (config) {
@@ -22,6 +21,10 @@ http.interceptors.request.use(
     } catch (error) {}
 
     // Do something before request is sent
+    const token = JSON.parse(localStorage.getItem("USER_LOGIN"))?.accessToken;
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
     return config;
   },
   function (error) {
