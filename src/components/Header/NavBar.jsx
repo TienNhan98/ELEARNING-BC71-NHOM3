@@ -14,14 +14,14 @@ export default function NavBar() {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
 
   // Kiểm tra màn hình mobile (dưới 576px)
-  const isMobile = useMediaQuery({ query: "(max-width: 576px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 610px)" });
 
   // Kiểm tra màn hình tablet (từ 576px đến 768px)
   const isTablet = useMediaQuery({
-    query: "(min-width: 577px) and (max-width: 768px)",
+    query: "(min-width: 610px) and (max-width: 1262px)",
   });
   // Kiểm tra kích thước màn hình
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1265px)" });
 
   useEffect(() => {
     dispatch(fetchCategoryCourses());
@@ -146,9 +146,9 @@ export default function NavBar() {
               style={{
                 backgroundColor: "#f6ba35",
                 border: "none",
-                position: isMobile ? "fixed" : "absolute", // Mobile thì cố định, tablet thì tương đối
-                right: isMobile ? "16px" : "24px",
-                top: isMobile ? "16px" : "15px",
+                position: isMobile ? "fixed" : "absolute", // Mobile và Tablet đều cố định
+                right: isMobile ? "16px" : "140px", // Giữ khoảng cách cho cả mobile và tablet
+                top: isMobile ? "16px" : "30px", // Giữ khoảng cách cho cả mobile và tablet
                 zIndex: 10,
               }}
             />

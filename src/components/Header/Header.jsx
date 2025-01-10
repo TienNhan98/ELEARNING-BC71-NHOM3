@@ -94,6 +94,7 @@ export default function Header() {
   );
   // Kiểm tra màn hình mobile (dưới 576px)
   const isMobile = useMediaQuery({ query: "(max-width: 576px)" });
+
   let renderMenu = () => {
     if (user) {
       return (
@@ -176,12 +177,12 @@ export default function Header() {
         </a>
 
         {/* Search */}
-        <div className="flex-grow lg:ml-2  flex justify-start items-center">
+        <div className="flex-grow lg:ml-2  flex justify-start items-center ">
           <SearchLogicComponent onSearch={handleSearch} />
         </div>
 
         {/* NavBar & User Menu */}
-        <div className="flex-shrink-0 flex items-center gap-4 lg:gap-8">
+        <div className=" flex-shrink-0 flex items-center gap-4 lg:gap-8">
           <NavBar />
           {renderMenu()}
         </div>
