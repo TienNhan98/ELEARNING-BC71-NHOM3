@@ -102,12 +102,18 @@ export default function NavBar() {
           <Menu.Item
             key="3"
             className="text-black font-bold hover:text-[#41b294] no-before-after"
+            onClick={() => {
+              navigate("/blog");
+            }}
           >
             BLOG
           </Menu.Item>
           <Menu.Item
             key="4"
             className="text-black font-bold hover:text-[#41b294] no-before-after"
+            onClick={() => {
+              navigate("/sukien");
+            }}
           >
             <Dropdown overlay={eventMenu} trigger={["hover"]}>
               <Space>SỰ KIỆN</Space>
@@ -117,6 +123,9 @@ export default function NavBar() {
             key="5"
             className="text-black font-bold hover:text-[#41b294] no-before-after"
             style={{ whiteSpace: "nowrap", width: "auto" }}
+            onClick={() => {
+              navigate("/thongtin");
+            }}
           >
             THÔNG TIN
           </Menu.Item>

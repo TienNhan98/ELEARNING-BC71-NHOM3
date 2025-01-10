@@ -19,6 +19,9 @@ import NotFoundLayout from "./pages/notFoundPage/NotFoundLayout";
 import Spiner from "./components/Spinner/Spinner";
 import ManageUsers from "./pages/admin/users/ManageUsers";
 import ManageCourses from "./pages/admin/courses/ManageCourses ";
+import Blog from "./pages/student/Blog/blog";
+import Infomation from "./pages/student/InfomationPage/infomation";
+import Event from "./pages/student/Event/event";
 
 export default function App() {
   return (
@@ -47,6 +50,15 @@ export default function App() {
 
             {/* route hiển thị tất cả khóa học */}
             <Route path="/khoahoc" element={<CourseAll />} />
+
+            {/* route hiển thị blog */}
+            <Route path="/blog" element={<Blog />} />
+
+            {/* route hiển thị trang thông tin */}
+            <Route path="/thongtin" element={<Infomation />} />
+
+            {/* route hiển thị trang sứ kiện */}
+            <Route path="/sukien" element={<Event />} />
 
             {/* route thông tin cá nhân */}
             <Route path="/thongtincanhan" element={<PersonalInfo />} />
