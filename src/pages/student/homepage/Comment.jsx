@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Col, Row } from "antd";
 import cauPhuc from "./asset/listDangVienHangDau/cauPhuc.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -5,8 +6,19 @@ import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
 import animate1 from "./asset/AnimateComment1.json";
 import animate2 from "./asset/AnimateComment2.json";
 import Lottie from "lottie-react";
+import { useInView } from "react-intersection-observer";
 
 export default function Comment() {
+  // Tạo state để kiểm tra khi phần tử vào view
+  const [refLeft, inViewLeft] = useInView({
+    triggerOnce: true,
+    threshold: 0.5,
+  });
+  const [refRight, inViewRight] = useInView({
+    triggerOnce: true,
+    threshold: 0.5,
+  });
+
   return (
     <div className="pb-5 px-5">
       <Row
@@ -15,17 +27,21 @@ export default function Comment() {
       >
         {/* Cột Trái */}
         <Col
+          ref={refLeft} // Liên kết với Intersection Observer
           xs={24} // Mobile: Full width
           sm={24} // Tablet: Full width
           md={11} // Desktop: Chiếm 1/2
           lg={11} // Desktop lớn: Chiếm 1/2
-          className="rounded-3xl py-5 px-3 relative overflow-hidden border-2 animate-slide-in-left"
+          className={`rounded-3xl py-5 px-3 relative overflow-hidden border-2 ${
+            inViewLeft ? "animate-slide-in-left" : "opacity-0"
+          }`}
         >
           {/* Animation layer */}
           <div className="absolute -inset-48 z-10">
             <Lottie
               animationData={animate1}
               loop={true}
+              autoplay={inViewLeft} // Animation chỉ chạy khi vào view
               style={{ width: "100%", height: "100%" }}
             />
           </div>
@@ -47,17 +63,21 @@ export default function Comment() {
 
         {/* Cột Phải */}
         <Col
+          ref={refRight} // Liên kết với Intersection Observer
           xs={24} // Mobile: Full width
           sm={24} // Tablet: Full width
           md={11} // Desktop: Chiếm 1/2
           lg={11} // Desktop lớn: Chiếm 1/2
-          className="rounded-3xl py-5 px-3 relative overflow-hidden border-2 animate-slide-in-right"
+          className={`rounded-3xl py-5 px-3 relative overflow-hidden border-2 ${
+            inViewRight ? "animate-slide-in-right" : "opacity-0"
+          }`}
         >
           {/* Animation layer */}
           <div className="absolute -inset-48 z-10">
             <Lottie
               animationData={animate2}
               loop={true}
+              autoplay={inViewRight} // Animation chỉ chạy khi vào view
               style={{ width: "100%", height: "100%" }}
             />
           </div>

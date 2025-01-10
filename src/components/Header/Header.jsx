@@ -9,6 +9,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import SearchLogicComponent from "./SearchLogicComponent";
 import { normalizeString } from "../../untils/normalize"; // Thêm import hàm normalize
 import { callApiKhoaHoc } from "../../service/callApiKhoaHoc";
+import { useMediaQuery } from "react-responsive";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,7 +36,6 @@ export default function Header() {
   const handleSearch = async (value) => {
     const normalizedValue = normalizeString(value); // Chuẩn hóa giá trị tìm kiếm
     if (!normalizedValue || normalizedValue.length === 0) {
-      // console.error("Giá trị tìm kiếm trống!");
       return; // Không thực hiện điều hướng nếu giá trị rỗng
     }
     try {
@@ -52,9 +52,7 @@ export default function Header() {
       });
       // Nếu không có kết quả tìm kiếm, hiển thị 6 khóa học ngẫu nhiên
       if (filteredCourses.length === 0) {
-        // Shuffle danh sách allCourses để lấy khóa học ngẫu nhiên
         const shuffledCourses = allCourses.sort(() => 0.5 - Math.random());
-        // Lấy 6 khóa học ngẫu nhiên
         filteredCourses.push(...shuffledCourses.slice(0, 6));
       }
       // Điều hướng đến trang tìm kiếm với tham số tìm kiếm
@@ -94,12 +92,23 @@ export default function Header() {
       />
     </div>
   );
-
+  // Kiểm tra màn hình mobile (dưới 576px)
+  const isMobile = useMediaQuery({ query: "(max-width: 576px)" });
   let renderMenu = () => {
     if (user) {
       return (
-        <div className="daDangNhap relative">
-          <div className="relative flex items-center gap-4">
+        <div
+          className={`daDangNhap relative w-full ${
+            isMobile ? "flex justify-center items-center mt-4" : ""
+          }`}
+        >
+          <div
+            className={`relative flex ${
+              isMobile
+                ? "justify-center items-center gap-6"
+                : "items-center gap-4"
+            }`}
+          >
             {user.maLoaiNguoiDung === "GV" && (
               <div
                 onClick={() => navigate("/admin")}
@@ -122,7 +131,9 @@ export default function Header() {
                   }}
                 >
                   <img
-                    className="border rounded-full object-cover opacity-90 hover:opacity-100 duration-300 transition-all w-16 h-16 cursor-pointer"
+                    className={`border rounded-full object-cover opacity-90 hover:opacity-100 duration-300 transition-all ${
+                      isMobile ? "w-14 h-14" : "w-12 h-12"
+                    } cursor-pointer`}
                     src={avt}
                     alt="Avatar"
                   />
@@ -134,7 +145,11 @@ export default function Header() {
       );
     } else {
       return (
-        <div className="flex justify-end items-center ml-4 chuaDangNhap">
+        <div
+          className={`flex items-center ${
+            isMobile ? "w-full justify-center mt-2" : "justify-end ml-4"
+          } chuaDangNhap`}
+        >
           <NavLink
             to="/login"
             className="btn btn-warning font-bold text-white hover:scale-105 duration-300 transition-all"
@@ -154,23 +169,19 @@ export default function Header() {
           : "relative opacity-90"
       } transition-all duration-500 ease-in-out`}
     >
-      <div className="flex flex-col md:flex-row items-center justify-between px-4 py-2">
+      <div className="flex items-center justify-between px-6 py-3 flex-wrap lg:flex-nowrap gap-4">
         {/* Logo */}
-        <a
-          href="#"
-          className="inline-block mb-2 md:mb-0 mr-2"
-          onClick={() => navigate("/")}
-        >
-          <img src={logo} alt="Logo" className="w-32 md:w-48 lg:w-60" />
+        <a href="#" className="flex-shrink-0" onClick={() => navigate("/")}>
+          <img src={logo} alt="Logo" className="w-28 sm:w-36 md:w-48 lg:w-60" />
         </a>
 
         {/* Search */}
-        <div className="w-full md:w-auto flex justify-center items-center mb-2 md:mb-0">
+        <div className="flex-grow lg:ml-2  flex justify-start items-center">
           <SearchLogicComponent onSearch={handleSearch} />
         </div>
 
         {/* NavBar & User Menu */}
-        <div className="flex flex-col sm:flex-row justify-end items-center w-full  md:w-auto ml-0 md:ml-4 lg:ml-64 gap-2">
+        <div className="flex-shrink-0 flex items-center gap-4 lg:gap-8">
           <NavBar />
           {renderMenu()}
         </div>
