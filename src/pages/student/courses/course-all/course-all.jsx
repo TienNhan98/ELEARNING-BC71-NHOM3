@@ -1,7 +1,5 @@
 import React from "react";
-
 import styles from "./course-all.module.scss";
-
 import { NavLink, useNavigate } from "react-router-dom";
 import { Card, Col, Popover, Row } from "antd";
 import avtELM from "../../list-courses-by-cat/asset/avaElonmuck.png";
@@ -14,10 +12,9 @@ export default function CourseAll() {
 
   const { coursesPagination } = useSelector((state) => state.courseSlice);
 
-  // hàm render khóa học
   const renderCourseCategoryList = () => {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
         {coursesPagination.map((item) => {
           const popoVercourseByCatetory = (
             <div>
@@ -183,7 +180,7 @@ export default function CourseAll() {
         <p>Bắt đầu hành trình nào!!!</p>
       </div>
       <div className={styles.classesContainer}>
-        <div className="grid grid-cols-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className={styles.classesBoxItem}>
             <div className={styles.classesBox1}>
               <h6>Chương trình học</h6>
@@ -229,7 +226,6 @@ export default function CourseAll() {
         </div>
       </div>
 
-      {/* Course list card */}
       <div className={styles.listCoursePagination}>
         <h6 className="mb-10 text-lg">
           <i className="fas fa-bookmark  pr-4 text-pink-500 font-600 text-lg"></i>
