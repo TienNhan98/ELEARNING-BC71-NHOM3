@@ -156,7 +156,7 @@ export default function Event() {
         <div className="container mx-auto flex flex-col md:flex-row items-center">
           <div className="w-full md:w-1/2">
             <img
-              src="https://demo2.cybersoft.edu.vn/static/media/backroundTech.a989a5f8.jpg"
+              src={avatar.cntt}
               alt="Illustration of a person working with technology"
               className="mx-auto"
             />

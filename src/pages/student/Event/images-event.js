@@ -10,6 +10,7 @@ import meta from "../../../asset/logo/meta.10fa2fa1.jpg";
 import google from "../../../asset/logo/Google-logo.f11902b5.jpg";
 import amazon from "../../../asset/logo/amazon.996890c4.jpg";
 import micro from "../../../asset/logo/microsoft.318b3280.jpg";
+import cntt from "../../../asset/logo/CNTT.gif";
 
 export default {
   avt1,
@@ -24,4 +25,5 @@ export default {
   google,
   amazon,
   micro,
+  cntt,
 };
