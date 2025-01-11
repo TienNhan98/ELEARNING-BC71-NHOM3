@@ -116,6 +116,9 @@ export default function NavBar() {
       <Menu.Item
         key="4"
         className="text-black font-bold hover:text-[#41b294] no-before-after"
+        onClick={() => {
+          navigate("/sukien");
+        }}
       >
         <Dropdown overlay={eventMenu} trigger={["hover"]}>
           <Space>SỰ KIỆN</Space>
@@ -148,7 +151,7 @@ export default function NavBar() {
                 border: "none",
                 position: isMobile ? "fixed" : "absolute", // Mobile và Tablet đều cố định
                 right: isMobile ? "16px" : "140px", // Giữ khoảng cách cho cả mobile và tablet
-                top: isMobile ? "16px" : "30px", // Giữ khoảng cách cho cả mobile và tablet
+                top: isMobile ? "16px" : "15px", // Giữ khoảng cách cho cả mobile và tablet
                 zIndex: 10,
               }}
             />
@@ -216,6 +219,9 @@ export default function NavBar() {
                   key="2"
                   title="SỰ KIỆN"
                   className="text-black font-bold hover:text-[#41b294]"
+                  onClick={() => {
+                    navigate("/sukien");
+                  }}
                 >
                   <Menu.Item key="event1">
                     <NavLink
