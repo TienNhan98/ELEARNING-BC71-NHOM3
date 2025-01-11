@@ -150,7 +150,7 @@ export default function NavBar() {
                 backgroundColor: "#f6ba35",
                 border: "none",
                 position: isMobile ? "fixed" : "absolute", // Mobile và Tablet đều cố định
-                right: isMobile ? "16px" : "140px", // Giữ khoảng cách cho cả mobile và tablet
+                right: isMobile ? "5px" : "5px", // Giữ khoảng cách cho cả mobile và tablet
                 top: isMobile ? "16px" : "15px", // Giữ khoảng cách cho cả mobile và tablet
                 zIndex: 10,
               }}
