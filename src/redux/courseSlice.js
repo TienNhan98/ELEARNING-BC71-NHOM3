@@ -22,10 +22,9 @@ export const fetchCoursesPagination = createAsyncThunk(
 export const fetchCategoryCourses = createAsyncThunk(
   "courses/fetchCategoryCourses",
   async (_, { rejectWithValue }) => {
-    console.log("fetchCategoryCourses");
     try {
       const response = await callApiKhoaHoc.layDanhMucKhoaHoc();
-      console.log(response);
+
       return response.data;
     } catch (error) {
       if (error.response && error.response.data) {

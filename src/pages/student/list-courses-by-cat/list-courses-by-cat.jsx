@@ -19,9 +19,9 @@ export default function ListCoursesByCat() {
       .catch((err) => {});
   }, []);
 
-  const topKhoaHocPhoBien = listKhoaHoc.slice(0, 4);
-  const khoaHocThamKhao = listKhoaHoc.slice(10, 14);
-  const cacKhoaHoc = listKhoaHoc.slice(30, 34);
+  const topKhoaHocPhoBien = listKhoaHoc.slice(60, 64);
+  const khoaHocThamKhao = listKhoaHoc.slice(65, 69);
+  const cacKhoaHoc = listKhoaHoc.slice(80, 84);
 
   return (
     <div>
